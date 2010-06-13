@@ -1,4 +1,4 @@
-#summary HtmlUnitScripter summary: how to download, install and use.
+#summary HtmlUnitScripter: how to download, install and use.
 
 = Introduction =
 HtmlUnitScripter is a Firefox extension that generates Java code based on items that you interact with while using the browser. The generated Java code can then be copied into a Java program that uses the HtmlUnit jars (http://htmlunit.sourceforge.net/) to interact with web pages. HtmlUnitScripter can track the actions of clicking a mouse and filling in text on a web page.
