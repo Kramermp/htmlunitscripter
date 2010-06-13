@@ -30,3 +30,88 @@ HtmlUnitScripter can create Java code for the following types of HTML elements:
 - HtmlUnitScripter is under ongoing development, and not every possible browser action is supported. For some actions, you may still need to manually code in Java to get the required results thru HtmlUnit.
 - HtmlUnitScripter cannot compensate for bad web page code. For example, if your web page has a textbox with neither an id nor a name attribute, HtmlUnitScripter cannot uniquely identify the textbox on the page. For these situations, HtmlUnitScripter will output commented Java code indicating that the element cannot be identified.
 - Behind the scenes, HtmlUnitScripter runs Javascript as part of the Firefox plugin. If you click on multiple elements very quickly, the Javascript will not be able to keep up and some output code will not be generated.
+
+= Installing and running HtmlUnitScripter =
+Click on the HtmlUnitScripter.xpi download link and use Firefox to open the file. Firefox will ask to confirm the installation. Click on “Install Now”. After the extension has been installed, you must restart Firefox. After Firefox has been restarted, you should see this link in the lower right corner:
+ADD IMAGE
+Click on the icon. HtmlUnitScripter will open, as shown below:
+ADD IMAGE
+- The Close button is in the upper right, and will hide HtmlUnitScripter. 
+- The output box is on the bottom and holds all generated Java code.
+- The Pause button will pause code output. HtmlUnitScripter is paused by default when it is started. To begin scripting, you must click the Record button (to the right of the Pause button). 
+- The Flush button will flush generated script output to the output box. Normally, clicking on elements and adding text does not show up in the output box until a new page is loaded. This is to ensure that the “click on html link” code is always generated last. If you want to see the generated output before a page is loaded, click the Flush button.
+- The Clear button will clear the output box.
+- The “Next variable num” number box is used to assign numbers to generated variable names while scripting. In Java, you cannot create two new variables with the same name. HtmlUnitScripter gets around this limitation by appending a number to each new variable that is generated. The number in the box is automatically incremented every time a new variable is created. You have the option of manually setting the next variable number. This feature comes in handy when you need to rerecord a portion of a script. If you started over using variable1, it would interfere with the existing variable1 that you generated previously.
+
+= Extension options =
+HtmlUnitScripter has some user-adjustable options. To see the options within Firefox, navigate to Tools -> Add-ons and click the Options button for HtmlUnitScripter. There are three options:
+- “Log to error console”. This option is disabled by default. Turning on this option will allow clicked elements that HtmlUnitScripter cannot identify to be logged to the Firefox error log. To see the Firefox error log, navigate to Tools -> Error Console. HtmlUnitScripter error messages will be in the Messages portion of the log.
+- “Generate System.out.println() statements between page loads”. This option is enabled by default. Whenever a new page is loaded while HtmlUnitScripter is recording, the page URL and title are generated as Java comments. In addition, if this option is enabled, a System.out.println() statement is also generated with the page title. This helps to “see” progress when running the Java program with the generated code.
+- “Retrieval of page info: check main frame only for info”. This option is enabled by default. As described above, whenever a new page is loaded while HtmlUnitScripter is recording, the page URL and title is generated as Java comments. Many websites use multiple frames to hold items like ads. For these websites, HtmlUnitScripter would generate URL and title information for every frame that it finds on the page. Enabling this option will cause HtmlUnitScripter to filter out all frame information except for the main frame. However, on some websites, you may need to see information for all frames. Disable this option to turn off the filtering.
+
+= Template Java class +
+<code>
+package org.home;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.Iterator;
+import java.util.List;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
+import com.gargoylesoftware.htmlunit.html.HtmlElement;
+import com.gargoylesoftware.htmlunit.html.HtmlInput;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlPasswordInput;
+import com.gargoylesoftware.htmlunit.html.HtmlRadioButtonInput;
+import com.gargoylesoftware.htmlunit.html.HtmlSelect;
+import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
+import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
+import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
+import com.gargoylesoftware.htmlunit.html.HtmlImage;
+
+public class BasicTest
+{
+	public static void main(String args[])
+	{
+	  HtmlPage page = null;
+        WebClient webClient = new WebClient( BrowserVersion.FIREFOX_3 );
+        String url = "http://htmlunit.sourceforge.net/";
+         
+        // Load the home page
+        try
+        {
+             page = webClient.getPage( url );
+             
+             // *** Add new code starting here *** 
+             
+             
+             // *** Add new code ending here ***
+        }
+        catch ( FailingHttpStatusCodeException e1 )
+        {
+             // TODO Auto-generated catch block
+             e1.printStackTrace();
+        }
+        catch ( MalformedURLException e1 )
+        {
+             // TODO Auto-generated catch block
+             e1.printStackTrace();
+        }
+        catch ( IOException e1 )
+        {
+             // TODO Auto-generated catch block
+             e1.printStackTrace();
+        }
+        
+        System.out.println(page.asText());
+	}
+}
+</code>
