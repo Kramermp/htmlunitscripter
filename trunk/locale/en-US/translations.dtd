@@ -1,0 +1,9 @@
+<!ENTITY runhtmlunitscripter "Start HtmlUnit Scripter">
+<!ENTITY pauseButtonLabel "Pause">
+<!ENTITY recordButtonLabel "Record">
+<!ENTITY clearButtonLabel "Clear">
+<!ENTITY clearButtonTooltip "Clear all generated code">
+<!ENTITY flushButtonLabel "Flush">
+<!ENTITY flushButtonTooltip "Flush generated code to textbox">
+<!ENTITY currentVarLabel "Next variable num:">
+<!ENTITY closeButtonLabel "Close">

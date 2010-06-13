@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+ 
+<prefwindow 
+     title="HtmlUnit Scripter Preferences"
+     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+ 
+<prefpane label="HtmlUnit Scripter Preferences">
+	<preferences>
+		<preference id="htmlunit-scripter-logging" name="extensions.htmlunitscripter.logging" type="bool"/>
+		<preference id="htmlunit-scripter-print-progress" name="extensions.htmlunitscripter.printProgress" type="bool"/>
+		<preference id="htmlunit-scripter-print-progress-text" name="extensions.htmlunitscripter.printProgressText" type="string"/>
+		<preference id="htmlunit-scripter-main-frame-filtering" name="extensions.htmlunitscripter.useMainFrameOnly" type="bool"/>
+	</preferences>
+		
+	<groupbox>
+		<caption label="Settings"/>
+		<grid>
+			<rows>
+				<row>
+					<checkbox id="logging-checkbox" label="Log to error console" preference="htmlunit-scripter-logging"/>
+				</row>
+				<row>
+					<checkbox id="printProgress-checkbox" label="Generate System.out.println() statements between page loads" preference="htmlunit-scripter-print-progress"/>
+				</row>
+				<row>
+					<checkbox id="main-frame-checkbox" label="Retrieval of page info: check main frame only for info" preference="htmlunit-scripter-main-frame-filtering"/>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>	
+</prefpane>
+ 
+</prefwindow>

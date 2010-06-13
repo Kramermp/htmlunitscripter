@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://htmlunitscripter/skin/skin.css" type="text/css"?> 
+<!DOCTYPE htmlunitscripter SYSTEM "chrome://htmlunitscripter/locale/translations.dtd">
+<overlay id="sample" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+		<script src="htmlunitScripter.js" />
+		
+		<menupopup id="menu_ToolsPopup"> 
+			<menuitem label="&runhtmlunitscripter;" key="link-target-finder-run-key" oncommand="htmlunitScripter.run()"/> 
+		</menupopup>
+		
+		<keyset>
+			<key id="link-target-finder-run-key" modifiers="accel alt shift" key="L" oncommand="htmlunitScripter.run()"/>
+		</keyset>
+		
+		<statusbar id="status-bar">
+			<statusbarpanel id="link-target-finder-status-bar-icon" class="statusbarpanel-iconic" src="chrome://htmlunitscripter/skin/status-bar.png" tooltiptext="&runhtmlunitscripter;" onclick="htmlunitScripter.run()" />
+		</statusbar>
+
+		
+		<toolbarpalette id="BrowserToolbarPalette">
+			<toolbarbutton id="link-target-finder-toolbar-button" label="Link Target Finder" tooltiptext="&runhtmlunitscripter;" oncommand="htmlunitScripter.run()"/>
+		</toolbarpalette>
+</overlay>

@@ -1,0 +1,5 @@
+#control-toolbar 
+{
+	width=150px;
+	border: 1px;
+}
