@@ -1,0 +1,32 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+HtmlUnitScripter is a Firefox extension that generates Java code based on items that you interact with while using the browser. The generated Java code can then be copied into a Java program that uses the HtmlUnit jars (http://htmlunit.sourceforge.net/) to interact with web pages. HtmlUnitScripter can track the actions of clicking a mouse and filling in text on a web page.
+
+For example, say you are on the HtmlUnit home page. Within Firefox, you turn on the HtmlUnitScripter. A dialog box appears with buttons to pause, record, etc. (more details below). You click the Record button. Then you click on the Get Started link on the page. In the dialog box, the following code is generated:<code>
+List<HtmlAnchor> anchors1 =  page.getAnchors();
+HtmlAnchor link2 = null;
+for(HtmlAnchor anchor: anchors1)
+{
+     if(anchor.asText().indexOf("Get started") > -1 )
+     {
+          link2 = anchor;
+          break;
+     }
+}
+page = link2.click();
+
+System.out.println("Current page: HtmlUnit - Getting Started with HtmlUnit");
+</code>
+You can then copy and paste this code into an existing HtmlUnit Java class. The advantage to this approach is that you do not have to dig through the page’s source code to find the anchor and then code it by hand in your HtmlUnit Java class. By using the Firefox extension and clicking around through your website, you can build up HtmlUnit tests very quickly.
+
+= Features =
+HtmlUnitScripter can create Java code for the following types of HTML elements:
+- Links with an href attribute (known as HtmlAnchors in HtmlUnit)
+- Input elements (checkboxes, radio buttons, submit buttons, and select lists/options are specifically supported. For input elements outside of these, HtmlUnitScripter will construct code that will create a generic HtmlInput object that is “clickable”).
+- Textboxes, textareas and password fields. For these elements, HtmlUnitScripter will capture the text that you typed as the field loses focus. The generated Java code will insert the text into the HtmlUnit object.
+
+= Limitations =
+- HtmlUnitScripter is under ongoing development, and not every possible browser action is supported. For some actions, you may still need to manually code in Java to get the required results thru HtmlUnit.
+- HtmlUnitScripter cannot compensate for bad web page code. For example, if your web page has a textbox with neither an id nor a name attribute, HtmlUnitScripter cannot uniquely identify the textbox on the page. For these situations, HtmlUnitScripter will output commented Java code indicating that the element cannot be identified.
+- Behind the scenes, HtmlUnitScripter runs Javascript as part of the Firefox plugin. If you click on multiple elements very quickly, the Javascript will not be able to keep up and some output code will not be generated.
