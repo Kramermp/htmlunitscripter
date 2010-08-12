@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE project [
+]>
+
+
+<project name="HtmlUnitScripter" basedir="." default="build">
+
+	<target name="clean" description="Clean output directories">
+		<delete dir="dist"/>
+	</target>
+
+
+	<target name="build" description="Compile main source tree java files">
+
+		<echo message="Building HtmlUnitScripter classes:"/>
+		<mkdir dir="dist"/>
+		<mkdir dir="dist/classes"/>
+		<javac destdir="dist/classes" failonerror="true">
+		    <src path="src"/>
+		    <classpath refid="master.classpath"/>
+		</javac>
+	
+	    	<!-- Jar up the built classes-->
+		<jar jarfile="dist/htmlunit-scripter-2.7.jar" basedir="dist/classes" />
+    	</target>
+
+	<!-- 3rd party jars -->
+	<property name="htmlunit-lib"
+		location="lib/htmlunit-2.7"/>
+	<property name="htmlunit.jar"
+		location="${htmlunit-lib}/htmlunit-2.7.jar"/>     
+	<property name="htmlunit-core-js.jar"
+		location="${htmlunit-lib}/htmlunit-core-js-2.7.jar"/>     
+	<property name="nekohtml.jar"
+		location="${htmlunit-lib}/nekohtml-1.9.14.jar"/>          
+
+<!-- Main build classpath -->
+<path id="master.classpath">
+    <pathelement location="${htmlunit.jar}"/>
+    <pathelement location="${htmlunit-core-js.jar}"/>
+    <pathelement location="${nekohtml.jar}"/>
+</path>		
+
+</project>
