@@ -51,11 +51,11 @@ HtmlUnitScripter is currently set up to run under any version of Firefox 3. It h
 = Installing and running HtmlUnitScripter =
 Click on the HtmlUnitScripter.xpi <a href="http://code.google.com/p/htmlunitscripter/downloads/list">download link</a> and use Firefox to open the file. Firefox will ask to confirm the installation. Click on "Install Now". After the extension has been installed, you must restart Firefox. After Firefox has been restarted, you should see a small scripter icon in the lower right corner. Click on the icon to open HtmlUnitScripter.
 
-- The output box is on the bottom and holds all generated Java code.
+- The output box is on the bottom and holds a preview of the generated Java code.
 
-- The Pause button will pause code output. HtmlUnitScripter is paused by default when it is started. To begin scripting, you must click the Record button (to the right of the Pause button). 
+- The Pause button will pause code generation. HtmlUnitScripter is paused by default when it is started. To begin scripting, you must click the Record button (to the right of the Pause button). 
 
-- The Flush button will flush generated script output to the output box. Normally, clicking on elements and adding text does not show up in the output box until a new page is loaded. This is to ensure that the "click on html link" code is always generated last. If you want to see the generated output before a page is loaded, click the Flush button.
+- The Flush button will flush generated code in memory to the output box. Normally, clicking on elements and adding text does not show up in the output box until a new page is loaded. This is to ensure that the "click on html link" code is always generated last. If you want to see the generated output before a page is loaded, click the Flush button.
 
 - The Clear button will clear the output box and reset the variable counter.
 
