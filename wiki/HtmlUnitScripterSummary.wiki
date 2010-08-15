@@ -51,7 +51,8 @@ HtmlUnitScripter is currently set up to run under any version of Firefox 3. It h
 = Installing and running HtmlUnitScripter =
 Click on the HtmlUnitScripter.xpi <a href="http://code.google.com/p/htmlunitscripter/downloads/list">download link</a> and use Firefox to open the file. Firefox will ask to confirm the installation. Click on "Install Now". After the extension has been installed, you must restart Firefox. After Firefox has been restarted, you should see this link in the lower right corner:
 
-<img src="start-button.png" alt="start-button.png">
+http://code.google.com/images/code_sm.png
+http://code.google.com/p/htmlunitscripter/wiki/start-button.png
 
 Click on the icon. HtmlUnitScripter will open, as shown below:
 
