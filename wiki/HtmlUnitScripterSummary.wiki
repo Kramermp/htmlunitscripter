@@ -139,15 +139,15 @@ Before a class can be generated, you must provide the package path and class nam
 
 = Running generated Java code =
 
-Running the generated Java class is the same as running any Java class that uses HtmlUnit, except that you will need to include one more jar in the classpath. You will need the htmlunit-scripter.jar, available for download here: http://code.google.com/p/htmlunitscripter/downloads/list
+Running the generated Java class is the same as running any Java class that uses HtmlUnit, except that you will need to include one more jar in the classpath. You will need the htmlunit-scripter.jar, available for download <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here:</a> 
 
 Code generated using HtmlUnitScripter has the ability to capture web pages as HtmlUnit sees them. This is done using the included htmlunit-scripter.jar file. By specifying certain extension and JRE runtime options (shown below), running a script will save each web page that is accessed during a test. Pages are saved with the name "output_X.html", where X is the chronological number of when the page was saved. If an exception occurs that forced the script to abort early, another page is saved named "error_page.html". This page holds the last page that was accessed by the script before the exception occurred. 
 
-Technically, only the html of each web page is saved. Elements like images, css files, etc., are not saved. But the htmlunit-scripter.jar file contains methods that are able to substitute relative urls in src attributes with absolute urls that resolve to the elements on the website. When the saved web pages are viewed locally, the absolute src elements are resolved and the page appears similar to how it looks on the actual website. In addition, some information and several links are added to the top:
+Technically, only the html of each web page is saved. Elements like images, css files, etc., are not saved. But the htmlunit-scripter.jar file contains methods that are able to substitute relative urls in src attributes with absolute urls that resolve to the elements on the website. When the saved web pages are viewed locally, the absolute src elements are resolved and the page appears similar to how it looks on the actual website. In addition, some information and several links are added to the top of the page:
 
 <code>
 Java code: org.home.AutoTest.main(AutoTest.java:90)
-<a href=".">Previous</a> <a href=".">Next</a> <a href=".">Error Page</a>
+Previous Next Error Page
 </code>
 
 The "Java code" line at the top indicates the line of source code that was being executed when the page was saved. This makes it easy to find the source code that generated a certain page. The Previous and Next links navigate to the previous and next pages that were saved during the test. The Error Page link will navigate to the error_page.html page that was saved during the test (if an exception occurred). If no exception occurred, this link points to a non-existent error page.
