@@ -49,14 +49,7 @@ HtmlUnitScripter can create Java code for the following types of HTML elements:
 HtmlUnitScripter is currently set up to run under any version of Firefox 3. It has been tested with HtmlUnit versions 2.5 and 2.7. Running the generated Java classes requires Java 5 and later. To run the generated classes, you will also need to download htmlunit-scripter.jar, available <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here:</a> This jar has been compiled under Java 5.
 
 = Installing and running HtmlUnitScripter =
-Click on the HtmlUnitScripter.xpi <a href="http://code.google.com/p/htmlunitscripter/downloads/list">download link</a> and use Firefox to open the file. Firefox will ask to confirm the installation. Click on "Install Now". After the extension has been installed, you must restart Firefox. After Firefox has been restarted, you should see this link in the lower right corner:
-
-http://code.google.com/images/code_sm.png
-http://code.google.com/p/htmlunitscripter/wiki/start-button.png
-
-Click on the icon. HtmlUnitScripter will open, as shown below:
-
-ADD IMAGE
+Click on the HtmlUnitScripter.xpi <a href="http://code.google.com/p/htmlunitscripter/downloads/list">download link</a> and use Firefox to open the file. Firefox will ask to confirm the installation. Click on "Install Now". After the extension has been installed, you must restart Firefox. After Firefox has been restarted, you should see a small scripter icon in the lower right corner. Click on the icon to open HtmlUnitScripter.
 
 - The output box is on the bottom and holds all generated Java code.
 
@@ -72,25 +65,21 @@ ADD IMAGE
 
 - The "Variable Append" text box can append some text to each variable name. This feature also comes in handy when you need to rerecord a portion of a script. For example, assume you recorded a script that had something like this:
 
+<code>
 HtmlInput checkbox5 = (HtmlInput) page.getElementById("id1");
-
 checkbox5.click();
-
-
+</code>
 
 But when you went to run the Java class, you got an exception because another element of a different type also has an id that equals "id1". This is a problem with the page, and should technically be fixed. But HtmlUnitScripter allows you to get around this limitation by changing the extension options to read that checkbox in a different way (more details about extension options are available below). Say you change the extension options to read input elements by XPath. But now you need to rerecord a portion of the script that clicks on that checkbox. You can set the "Next variable num" box to "5" and set the "Variable Append" box to "a". When you click on the checkbox again, you will get this output:
 
+<code>
 List<HtmlElement> elements5a = (List<HtmlElement>) page.getByXPath("(//input[@type = 'checkbox'])[3]");
 
 HtmlInput checkbox6a = (HtmlInput) elements5a.get(0);
-
 checkbox6a.click();
-
-
+</code>
 
 You can then comment out the existing checkbox5 code and replace it with the new code. The new code will not interfere with existing variables in the Java class. Thus, updating a script can become a quick operation.
-
-
 
 = Extension options =
 
@@ -120,37 +109,33 @@ HtmlUnitScripter has some user-adjustable options. To see the options within Fir
 
 For maximum flexibility, HtmlUnitScripter will use combinations of these methods for each extension option:
 
-  - Use id or name first (try using id attribute, then try using name attribute, then try using displayed text, then try using a clickable image, then try using the href attribute)
+  - **Use id or name first** (try using id attribute, then try using name attribute, then try using displayed text, then try using a clickable image, then try using the href attribute)
 
-  - Use link text first (try using displayed text, then try using id attribute, then try using name attribute, then try using a clickable image, then try using the href attribute)
+  - **Use link text first** (try using displayed text, then try using id attribute, then try using name attribute, then try using a clickable image, then try using the href attribute)
 
-  - Use link href first (try using href attribute, then try using id attribute, then try using name attribute, then try using a clickable image, then try using displayed text)
+  - **Use link href first** (try using href attribute, then try using id attribute, then try using name attribute, then try using a clickable image, then try using displayed text)
 
-  - Use link XPath only- retrieves a link only by its XPath. The XPath will always exist, so no other attributes are tried.
-
-
-
-- **Retrieving other elements (except textboxes, textareas and select list options)**
-
-Like retrieving links, several ways are provided to retrieve html input elements. Most html input elements have a value attribute, which is often unique on the page. For textboxes and textareas, the value attribute holds whatever is typed in the textbox and thus cannot be used to retrieve the element. Select boxes do not have a value either (although the options do). So these types of elements are managed by a different extension option. The following options are available for all the other elements: 
-  - Use id or name
-  - Use element value
-  - Use XPath
+  - **Use link XPath only** retrieves a link only by its XPath. The XPath will always exist, so no other attributes are tried.
 
 
+**Retrieving other elements (except textboxes, textareas and select list options)**
 
-- **Retrieving textboxes, textareas and select list options**
+Like links, several ways are provided to retrieve html input elements. Most html input elements have a value attribute, which is often unique on the page. For textboxes and textareas, the value attribute holds whatever is typed in the textbox and thus cannot be used to retrieve the element. Select boxes do not have a value either (although the options do). So these types of elements are managed by a different extension option. The following options are available for all the other elements: 
+  - **Use id or name**
+  - **Use element value**
+  - **Use XPath**
+
+**Retrieving textboxes, textareas and select list options**
 
 As stated above, textboxes, textareas and select lists cannot be retrieved by value. These elements can be retrieved using the following options:
-  - Use id or name
-  - Use XPath
+  - **Use id or name**
+  - **Use XPath**
 
 
 = Generating a full Java class =
 HtmlUnitScripter is capable of generating the text for a full Java class, including all import statements and try/catch blocks. Due to the security constraints in Javascript, a .java file cannot actually be saved on the local machine. But the class generation feature provides a way to generate a Java class that you can copy and paste the generated code into a .java file that you create yourself.
 
-To generate a Java class, click the "Generate Class" button. A dialog box like the one below will pop up:
-ADD IMAGE
+To generate a Java class, click the "Generate Class" button. A dialog box will pop up.
 Before a class can be generated, you must provide the package path and class name. The package path can be something like "org.mysite.scripts". The class name can be something like "MySiteTest". After you have typed in the package path and class name, click the "Generate Java" button. You will need to create a .java file in the appropriate place on your file system. Then you can copy the generated code in the window to the .java file, and compile and run the class.
 
 
@@ -158,22 +143,15 @@ Before a class can be generated, you must provide the package path and class nam
 
 Running the generated Java class is the same as running any Java class that uses HtmlUnit, except that you will need to include one more jar in the classpath. You will need the htmlunit-scripter.jar, available for download here: http://code.google.com/p/htmlunitscripter/downloads/list
 
-
-
 Code generated using HtmlUnitScripter has the ability to capture web pages as HtmlUnit sees them. This is done using the included htmlunit-scripter.jar file. By specifying certain extension and JRE runtime options (shown below), running a script will save each web page that is accessed during a test. Pages are saved with the name "output_X.html", where X is the chronological number of when the page was saved. If an exception occurs that forced the script to abort early, another page is saved named "error_page.html". This page holds the last page that was accessed by the script before the exception occurred. 
-
-
 
 Technically, only the html of each web page is saved. Elements like images, css files, etc., are not saved. But the htmlunit-scripter.jar file contains methods that are able to substitute relative urls in src attributes with absolute urls that resolve to the elements on the website. When the saved web pages are viewed locally, the absolute src elements are resolved and the page appears similar to how it looks on the actual website. In addition, some information and several links are added to the top:
 
+<code>
 Java code: org.home.AutoTest.main(AutoTest.java:90)
-
 Previous Next Error Page
-
-
+</code>
 
 The "Java code" line at the top indicates the line of source code that was being executed when the page was saved. This makes it easy to find the source code that generated a certain page. The Previous and Next links navigate to the previous and next pages that were saved during the test. The Error Page link will navigate to the error_page.html page that was saved during the test (if an exception occurred). If no exception occurred, this link points to a non-existent error page.
 
-
-
-To capture web pages during a test, the "Generate page logging statements between page loads" extension option must be enabled. Enabling this option will allow Java code to be generated that will save the pages. Two JVM runtime arguments must be also be added when executing the Java class: -DsavePagesLocally=true -DlocalFilePath=yourFilePath
+To capture web pages during a test, the "Generate page logging statements between page loads" extension option must be enabled. Enabling this option will allow Java code to be generated that will save the pages. Two JVM runtime arguments must be also be added when executing the Java class: <code>-DsavePagesLocally=true -DlocalFilePath=yourFilePath</code>
