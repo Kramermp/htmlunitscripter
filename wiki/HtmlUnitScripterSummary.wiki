@@ -4,10 +4,8 @@
 
 HtmlUnitScripter is a Firefox extension that generates Java code based on items that you interact with while using the browser. The generated Java code can then be copied into a Java class that uses the HtmlUnit jars (available from <a href="http://htmlunit.sourceforge.net">http://htmlunit.sourceforge.net</a>) to interact with web pages. HtmlUnitScripter can track the actions of clicking a mouse and filling in text on a web page.
 
-
-
-For example, say you are on the HtmlUnit home page <a href="http://htmlunit.sourceforge.net">http://htmlunit.sourceforge.net</a>. Within Firefox, you turn on HtmlUnitScripter. A dialog box appears with buttons to pause, record, etc. (more details below). You click the Record button. Then you click on the Get Started link on the page. In the dialog box, the following code is generated:<code>
-
+For example, say you are on the HtmlUnit home page <a href="http://htmlunit.sourceforge.net">http://htmlunit.sourceforge.net</a>. Within Firefox, you turn on HtmlUnitScripter. A dialog box appears with buttons to pause, record, etc. (more details below). You click the Record button. Then you click on the Get Started link on the page. In the dialog box, the following code is generated:
+<code>
 List<HtmlAnchor> anchors1 =  page.getAnchors();
 HtmlAnchor link2 = null;
 
@@ -25,8 +23,6 @@ page = link2.click();
 
 You can then copy and paste this code into an existing HtmlUnit Java class. Or you can generate a Java class within HtmlUnitScripter. The advantage to this approach is that you do not have to dig through the page's source code to find the anchor and then code it by hand in your HtmlUnit Java class. By using the Firefox extension and clicking around through your website, you can build up HtmlUnit tests very quickly.
 
-
-
 = Features =
 
 HtmlUnitScripter can create Java code for the following types of HTML elements:
@@ -36,7 +32,6 @@ HtmlUnitScripter can create Java code for the following types of HTML elements:
 - Input elements (checkboxes, radio buttons, submit buttons, and select lists/options are specifically supported. For input elements outside of these, HtmlUnitScripter will construct code that will create a generic HtmlInput object that is "clickable").
 
 - Textboxes, textareas and password fields. For these elements, HtmlUnitScripter will capture the text that you typed as the field loses focus. The generated Java code will insert the text into the HtmlUnit object.
-
 
 
 = Limitations =
@@ -49,17 +44,12 @@ HtmlUnitScripter can create Java code for the following types of HTML elements:
 
 - HtmlUnit is very picky about missing Javascript files. You may record a script thru the browser without any visible errors, but executing the script later can result in Javascript errors from HtmlUnit. The only thing you can do for these situations is to correct the situation that caused the missing Javascript.
 
-
-
 = Requirements =
 
-HtmlUnitScripter is currently set up to run under any version of Firefox 3. It has been tested with HtmlUnit versions 2.5 and 2.7. Running the generated Java classes requires Java 5 and later. To run the generated classes, you will also need to download htmlunit-scripter.jar, available here: http://code.google.com/p/htmlunitscripter/downloads/list This jar has been compiled under Java 5.
-
-
+HtmlUnitScripter is currently set up to run under any version of Firefox 3. It has been tested with HtmlUnit versions 2.5 and 2.7. Running the generated Java classes requires Java 5 and later. To run the generated classes, you will also need to download htmlunit-scripter.jar, available <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here:</a> This jar has been compiled under Java 5.
 
 = Installing and running HtmlUnitScripter =
-
-Click on the HtmlUnitScripter.xpi download link and use Firefox to open the file. Firefox will ask to confirm the installation. Click on "Install Now". After the extension has been installed, you must restart Firefox. After Firefox has been restarted, you should see this link in the lower right corner:
+Click on the HtmlUnitScripter.xpi <a href="http://code.google.com/p/htmlunitscripter/downloads/list">download link</a> and use Firefox to open the file. Firefox will ask to confirm the installation. Click on "Install Now". After the extension has been installed, you must restart Firefox. After Firefox has been restarted, you should see this link in the lower right corner:
 
 ADD IMAGE
 
