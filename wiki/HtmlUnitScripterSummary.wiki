@@ -91,7 +91,7 @@ HtmlUnitScripter has some user-adjustable options. To see the options within Fir
 
 *Retrieval of page info: check main frame only for info:* This option is enabled by default. As described above, whenever a new page is loaded while HtmlUnitScripter is recording, the page URL and title is generated as Java comments. Many websites use multiple frames to hold items like ads. For these websites, HtmlUnitScripter would generate URL and title information for every frame that it finds on the page. When this item is enabled, HtmlUnitScripter will filter out all frame information except for the main frame. However, on some websites, you may need to see information for all frames. Disable this option to turn off the filtering.
 
-*Retrieving links* HtmlUnitScripter provides several ways to retrieve links. The attributes available in a link can vary. For example, a link may or may not have an id attribute. In many cases, the link can still uniquely be identified on a page by using using some other attribute, such as the link href attribute. Code exists to retrieve a link with the following methods:
+*Retrieving links* HtmlUnitScripter provides several ways to retrieve links. The attributes available in a link can vary. For example, a link may or may not have an id attribute. In many cases, the link can still uniquely be identified on a page by using using some other attribute, such as the link href attribute. Code exists to retrieve a link in the following ways:
 
   - Retrieve a link using its id or name attribute (id is always used first if available)
 
@@ -120,13 +120,16 @@ For maximum flexibility, HtmlUnitScripter will use combinations of these methods
 
 Like links, several ways are provided to retrieve html input elements. Most html input elements have a value attribute, which is often unique on the page. Exceptions to this rule are textboxes, textareas, and select lists (see below). The following options are available for all the other elements: 
   - *Use id or name* (id is always used first if available)
+
   - *Use element value*
+
   - *Use XPath*
 
 **Retrieving textboxes, textareas and select list options**
 
 For textboxes and textareas, the value attribute holds whatever is typed in the textbox and thus cannot be used to retrieve the element. Select boxes do not have a value either(although the options within the select box do). Thus, textboxes, textareas and select lists cannot be retrieved by value. These elements can be retrieved using the following options:
   - *Use id or name* (id is always used first if available)
+
   - *Use XPath*
 
 
