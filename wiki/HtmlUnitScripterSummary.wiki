@@ -93,9 +93,7 @@ HtmlUnitScripter has some user-adjustable options. To see the options within Fir
 
 *Retrieving links* HtmlUnitScripter provides several ways to retrieve links. The attributes available in a link can vary. For example, a link may or may not have an id attribute. In many cases, the link can still uniquely be identified on a page by using using some other attribute, such as the link href attribute. Code exists to retrieve a link with the following methods:
 
-  - Retrieve a link using its id attribute
-
-  - Retrieve a link using its name attribute
+  - Retrieve a link using its id or name attribute (id is always used first if available)
 
   - Retrieve a link using its href attribute
 
@@ -121,14 +119,14 @@ For maximum flexibility, HtmlUnitScripter will use combinations of these methods
 *Retrieving other elements (except textboxes, textareas and select list options)*
 
 Like links, several ways are provided to retrieve html input elements. Most html input elements have a value attribute, which is often unique on the page. Exceptions to this rule are textboxes, textareas, and select lists (see below). The following options are available for all the other elements: 
-  - *Use id or name*
+  - *Use id or name* (id is always used first if available)
   - *Use element value*
   - *Use XPath*
 
 **Retrieving textboxes, textareas and select list options**
 
 For textboxes and textareas, the value attribute holds whatever is typed in the textbox and thus cannot be used to retrieve the element. Select boxes do not have a value either(although the options within the select box do). Thus, textboxes, textareas and select lists cannot be retrieved by value. These elements can be retrieved using the following options:
-  - *Use id or name*
+  - *Use id or name* (id is always used first if available)
   - *Use XPath*
 
 
