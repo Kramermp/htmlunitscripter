@@ -1,0 +1,372 @@
+Java code: org.home.LocalTest.main(LocalTest.java:94)<br>&nbsp;<a href="output_2.html">Next</a>
+&nbsp;<a href="error_page.html">Error page</a>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<html>
+  <head>
+    <title>
+      HtmlUnit testing page 1
+    </title>
+    <script language="JavaScript">
+//<![CDATA[
+
+function handleClick(event)
+{
+	var target = event.target
+
+	var consoleTextbox = document.getElementById("console");
+	consoleTextbox.value = "URL='" + target.baseURI + "'";
+	//consoleTextbox.value = "value='" + target.value + "', text='" + target.text + "', parent.onclick=" + target.parentNode.onclick;
+
+	var targetVar = target.toString();
+	document.forms[0].elements[0].value += target + " fired. ";
+}
+
+function handleBlur(event)
+{
+	var target = event.target;
+	var consoleTextbox = document.getElementById("console");
+
+	var i=0;
+	//alert("User typed '" + target.value + "'");
+	if(target.type == "textarea")
+	{
+		consoleTextbox.value = "Textarea was used and contains text '" + target.value + "'";
+	}
+	else if(target.type == "text")
+	{
+		consoleTextbox.value = "Input text field was used and contains text '" + target.value + "'";
+	}
+}
+
+function trim(theString) 
+{
+    return theString.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+function makeXPath(event)
+{
+	var target = event.target;
+	var consoleTextbox = document.getElementById("console");
+
+	var reversedXPath = buildXPath(target);
+	reversedXPath = trim(reversedXPath);
+	var pathArray = reversedXPath.split("/");
+
+	var xPath = "";
+	pathArray.reverse();
+
+	for(element in pathArray)
+	{
+		xPath += "/" + pathArray[element];
+	}	
+	consoleTextbox.value = xPath;
+}
+
+function buildXPath(currentNode)
+{
+	var nodeName = currentNode.nodeName.toLowerCase();
+
+	if( nodeName == "html")
+	{
+		return nodeName;
+	}
+	else
+	{
+		var parent = currentNode.parentNode;
+		var children = parent.children;
+		var childrenCount = children.length;
+		var i=1;
+
+		for (child in children) 
+		{ 
+			if( children[child].nodeName == currentNode.nodeName )
+			{
+				if(children[child] == currentNode)
+				{
+					break;
+				}
+				else
+				{
+					i++;
+				}
+			}   		
+		}
+
+
+		if(childrenCount > 1)
+		{
+			return nodeName + "[" + i.toString() + "]/" + buildXPath(parent);			
+		}
+		else
+		{
+			return nodeName + "/" + buildXPath(parent);
+		}
+		
+	}
+	
+}
+
+ 
+//]]>
+    </script>
+  </head>
+  <body>
+    <form name="form1" method="post">
+      <a href="file:///home/mattg/HtmlUnit/examples/." onclick="handleClick(event)">
+        
+ On the road to nowhere...
+
+      </a>
+      <br/>
+      <a href="file:///home/mattg/HtmlUnit/examples/there.html" onclick="handleClick(event)" id="tothere" name="tothere">
+        
+ Go to second page.
+ 
+      </a>
+      <br/>
+      
+A span link:
+
+      <br/>
+      <a href="file:///home/mattg/HtmlUnit/examples/there.html" onclick="handleClick(event)">
+        <span>
+          Go to
+          <br/>
+          second page
+        </span>
+      </a>
+      <br/>
+      <a href="file:///home/mattg/HtmlUnit/examples/there.html" onclick="handleClick(event)" name="tothere1">
+        <img src="file:///home/mattg/HtmlUnit/examples/powerbutton.png" alt="Save And Continue button" border="0"/>
+      </a>
+      <table>
+        <tbody align="left">
+          <tr>
+            <td valign="top">
+              
+     		Event Being Handled:
+     		
+              <textarea rows="4" cols="60" wrap="soft" id="textarea1" onblur="handleBlur(event)">              </textarea>            </td>
+          </tr>
+          <tr>
+            <td valign="top">
+              <input type="reset" id="reset1" name="reset1" value="Reset me" onclick="handleClick(event)"/>
+              <br/>
+              <br/>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table>
+                <tbody align="left">
+                  <tr>
+                    <td valign="top">
+                      
+						Text box with id:
+						
+                      <br/>
+                      <input type="text" id="text1" onblur="handleBlur(event)"/>
+                       
+						
+                      <br/>
+                      <br/>
+                    </td>
+                    <td valign="top">
+                      
+						Text box with name:
+						
+                      <br/>
+                      <input type="text" name="text2" onblur="handleBlur(event)"/>
+                       
+						
+                      <br/>
+                      <br/>
+                    </td>
+                    <td valign="top">
+                      
+						Select list (id only):
+						
+                      <br/>
+                      <select id="gender1" onclick="handleClick(event)">
+                        <option value=""/>
+                        <option value="FE">
+                          Female
+                        </option>
+                        <option value="MA" selected="false">
+                          Male
+                        </option>
+                      </select>
+                    </td>
+                    <td valign="top">
+                      
+						Select list (name only):
+						
+                      <br/>
+                      <select name="gender2" onclick="handleClick(event)">
+                        <option value=""/>
+                        <option value="FE">
+                          Female
+                        </option>
+                        <option value="MA" selected="false">
+                          Male
+                        </option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table>
+                <tbody align="left">
+                  <tr>
+                    <td valign="top">
+                      
+						Password box with id:
+						
+                      <br/>
+                      <input type="password" id="password1" onblur="handleBlur(event)"/>
+                       
+					
+                    </td>
+                    <td>
+                      
+						Password box with name:
+						
+                      <br/>
+                      <input type="password" name="password2" onblur="handleBlur(event)"/>
+                       
+					
+                    </td>
+                    <td valign="top">
+                      
+						Generic input image with value:
+						
+                      <br/>
+                      <input type="image" value="Submit" src="file:///home/mattg/HtmlUnit/examples/powerbutton.png" alt="Next" onclick="handleClick(event)"/>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <br/>
+          <tr>
+            <td>
+              <table columns="4" border="1">
+                <tbody align="left">
+                  <tr>
+                    <td valign="top">
+                      
+						Checkbox(value only):
+                      <input type="checkbox" value="chk-value1" onclick="makeXPath(event)"/>
+                      <br/>
+                      
+						Checkbox 2(value only):
+                      <input type="checkbox" value="chk-value2" onclick="makeXPath(event)"/>
+                    </td>
+                    <td valign="top">
+                      
+						Checkbox(id only):
+                      <input type="checkbox" id="chk-id1" onclick="makeXPath(event)" value="on"/>
+                      <br/>
+                      
+						Checkbox 2(id only):
+                      <input type="checkbox" id="chk-id2" onclick="makeXPath(event)" value="on"/>
+                    </td>
+                    <td valign="top">
+                      
+						Checkbox(name only):
+                      <input type="checkbox" name="chk-name1" onclick="makeXPath(event)" value="on"/>
+                      <br/>
+                      
+						Checkbox 2(name only):
+                      <input type="checkbox" name="chk-name2" onclick="makeXPath(event)" value="on"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td valign="top">
+                      
+						Radio buttons (value only):
+						
+                      <br/>
+                      <input type="radio" name="radio1" value="male" onclick="handleClick(event)"/>
+                       Male
+						
+                      <br/>
+                      <input type="radio" name="radio1" value="female" onclick="handleClick(event)"/>
+                       Female
+						
+                      <br/>
+                    </td>
+                    <td valign="top">
+                      
+						Radio buttons (id + value):
+						
+                      <br/>
+                      <input type="radio" name="radio2" id="radio-male" value="male2" onclick="handleClick(event)"/>
+                       Male
+						
+                      <br/>
+                      <input type="radio" name="radio2" id="radio-female" value="female2" onclick="handleClick(event)"/>
+                       Female
+						
+                      <br/>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <br/>
+          <tr>
+            <td>
+              <table columns="4" border="1">
+                <tbody align="left">
+                  <tr>
+                    <td valign="top">
+                      <input type="submit" value="Submit value" onclick="handleClick(event)"/>
+                      
+						 
+						
+                      <input type="submit" id="submit id" onclick="handleClick(event)"/>
+                      
+						 
+						
+                      <input type="submit" name="submit name" onclick="handleClick(event)"/>
+                    </td>
+                    <td valign="top">
+                      <input type="button" value="I&apos;m an anteater!" onclick="handleClick(event)"/>
+                      
+						 
+						
+                      <input type="button" id="generic input id" onclick="handleClick(event)"/>
+                      
+						 
+						
+                      <input type="button" name="generic input name" onclick="handleClick(event)"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td valign="top">
+                      <br/>
+                      Textarea with id:
+                      <br/>
+                      <textarea id="textarea1" rows="4" cols="40" wrap="soft">                      </textarea>                    </td>
+                    <td valign="top">
+                      <br/>
+                      Textarea with name:
+                      <br/>
+                      <textarea name="textarea2" rows="4" cols="40" wrap="soft">                      </textarea>                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </body>
+</html>

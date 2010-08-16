@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<title>HtmlUnit testing page 1</title>
+<script language="JavaScript">
+function handleClick(event)
+{
+	var target = event.target
+
+	var consoleTextbox = document.getElementById("console");
+	consoleTextbox.value = "URL='" + target.baseURI + "'";
+	//consoleTextbox.value = "value='" + target.value + "', text='" + target.text + "', parent.onclick=" + target.parentNode.onclick;
+
+	var targetVar = target.toString();
+	document.forms[0].elements[0].value += target + " fired. ";
+}
+
+function handleBlur(event)
+{
+	var target = event.target;
+	var consoleTextbox = document.getElementById("console");
+
+	var i=0;
+	//alert("User typed '" + target.value + "'");
+	if(target.type == "textarea")
+	{
+		consoleTextbox.value = "Textarea was used and contains text '" + target.value + "'";
+	}
+	else if(target.type == "text")
+	{
+		consoleTextbox.value = "Input text field was used and contains text '" + target.value + "'";
+	}
+}
+
+function trim(theString) 
+{
+    return theString.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+function makeXPath(event)
+{
+	var target = event.target;
+	var consoleTextbox = document.getElementById("console");
+
+	var reversedXPath = buildXPath(target);
+	reversedXPath = trim(reversedXPath);
+	var pathArray = reversedXPath.split("/");
+
+	var xPath = "";
+	pathArray.reverse();
+
+	for(element in pathArray)
+	{
+		xPath += "/" + pathArray[element];
+	}	
+	consoleTextbox.value = xPath;
+}
+
+function buildXPath(currentNode)
+{
+	var nodeName = currentNode.nodeName.toLowerCase();
+
+	if( nodeName == "html")
+	{
+		return nodeName;
+	}
+	else
+	{
+		var parent = currentNode.parentNode;
+		var children = parent.children;
+		var childrenCount = children.length;
+		var i=1;
+
+		for (child in children) 
+		{ 
+			if( children[child].nodeName == currentNode.nodeName )
+			{
+				if(children[child] == currentNode)
+				{
+					break;
+				}
+				else
+				{
+					i++;
+				}
+			}   		
+		}
+
+
+		if(childrenCount > 1)
+		{
+			return nodeName + "[" + i.toString() + "]/" + buildXPath(parent);			
+		}
+		else
+		{
+			return nodeName + "/" + buildXPath(parent);
+		}
+		
+	}
+	
+}
+
+ </script>
+
+</head>
+
+<body>
+<form name="form1" method="post">
+    <a href="." onclick="handleClick(event)" >
+ On the road to nowhere...
+</a>
+<br>
+<a href="there.html" onclick="handleClick(event)" id="tothere" name="tothere">
+ Go to second page.
+ </a>
+<br>
+A span link:
+<br>
+  <a href="there.html" onClick="handleClick(event)"><span>Go to<br>second page</span></a>
+<br>
+
+<a href="there.html" onclick="handleClick(event)" name="tothere1">
+  <img src="powerbutton.png" alt="Save And Continue button" border="0" >
+</a>
+
+
+ <table>
+ 	<tr>
+		<td valign="top">
+     		Event Being Handled:
+     		<textarea rows="4" cols="60" wrap="soft" id="textarea1" onBlur="handleBlur(event)"></textarea>
+ 		</td>
+	</tr>
+ 	<tr>
+		<td valign="top">
+	    	<input type="Reset" id="reset1" name="reset1" value="Reset me" onClick="handleClick(event)">
+			<br>
+			<br>
+ 		</td>
+	</tr>
+	<tr>
+		<td>
+			<table>
+				<tr>
+					<td valign="top">
+						Text box with id:
+						<br>
+			     		<input type="text" id="text1" onBlur="handleBlur(event)"/>&nbsp;
+						<br>
+						<br>
+			 		</td>
+					<td valign="top">
+						Text box with name:
+						<br>
+			     		<input type="text" name="text2" onBlur="handleBlur(event)"/>&nbsp;
+						<br>
+						<br>
+			 		</td>
+					<td valign="top">
+						Select list (id only):
+						<br>
+						<select id='gender1' onClick="handleClick(event)">
+							<option value='' selected='true'></option>
+							<option value='FE' selected='false'>Female</option>
+							<option value='MA' selected='false'>Male</option>
+						</select>
+					</td>
+					<td valign="top">
+						Select list (name only):
+						<br>
+						<select name='gender2' onClick="handleClick(event)">
+							<option value='' selected='true'></option>
+							<option value='FE' selected='false'>Female</option>
+							<option value='MA' selected='false'>Male</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</td>		
+	</tr>
+
+	<tr>
+		<td>
+			<table>
+				<tr>
+					<td valign="top">
+						Password box with id:
+						<br>
+						<input type="password" id="password1" onBlur="handleBlur(event)"/>&nbsp;
+					</td>
+					<td>
+						Password box with name:
+						<br>
+						<input type="password" name="password2" onBlur="handleBlur(event)"/>&nbsp;
+					</td>
+					<td valign="top">
+						Generic input image with value:
+						<br>
+						<input type="image" value="Submit"  src="powerbutton.png" alt="Next" onclick="handleClick(event)"/>
+					</td>
+				</tr>
+			</td>
+		</table>
+		
+	</tr>
+	<br>
+	<tr>
+		<td>		
+			<table columns="4" border="1">
+				<tr>
+					<td valign="top">
+						Checkbox(value only):<input type="checkbox" value="chk-value1" onClick="makeXPath(event)"/>
+						<br>
+						Checkbox 2(value only):<input type="checkbox" value="chk-value2" onClick="makeXPath(event)"/>
+			 		</td>
+					<td valign="top">
+						Checkbox(id only):<input type="checkbox" id="chk-id1" onClick="makeXPath(event)"/>
+						<br>
+						Checkbox 2(id only):<input type="checkbox" id="chk-id2" onClick="makeXPath(event)"/>
+			 		</td>
+					<td valign="top">
+						Checkbox(name only):<input type="checkbox" name="chk-name1" onClick="makeXPath(event)"/>
+						<br>
+						Checkbox 2(name only):<input type="checkbox" name="chk-name2" onClick="makeXPath(event)"/>
+			 		</td>
+				</tr>
+					
+				<tr>
+					<td valign="top">
+						Radio buttons (value only):
+						<br>
+						<input type="radio" name="radio1" value="male" onClick="handleClick(event)"/> Male
+						<br>
+						<input type="radio" name="radio1" value="female" onClick="handleClick(event)"/> Female
+						<br>
+					</td>
+					<td valign="top">
+						Radio buttons (id + value):
+						<br>
+						<input type="radio" name="radio2" id="radio-male" value="male2" onClick="handleClick(event)"/> Male
+						<br>
+						<input type="radio" name="radio2" id="radio-female" value="female2" onClick="handleClick(event)"/> Female
+						<br>
+					</td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+	<br>
+	<tr>
+		<td>		
+			<table columns="4" border="1">
+				<tr>
+					<td valign="top">
+						<input type="submit" value="Submit value" onclick="handleClick(event)"/>
+						&nbsp;
+						<input type="submit" id="submit id" onclick="handleClick(event)"/>
+						&nbsp;
+						<input type="submit" name="submit name" onclick="handleClick(event)"/>
+					</td>
+					<td valign="top">
+						<input type="button" value="I'm an anteater!" onclick="handleClick(event)"/>
+						&nbsp;
+						<input type="button" id="generic input id" onclick="handleClick(event)"/>
+						&nbsp;
+						<input type="button" name="generic input name" onclick="handleClick(event)"/>			
+					</td>
+				</tr>
+				<tr>
+					<td valign="top">
+						<br>Textarea with id:<br>
+		     				<textarea id="textarea1" rows="4" cols="40" wrap="soft" ></textarea>
+					</td>
+					<td valign="top">
+						<br>Textarea with name:<br>
+		     				<textarea name="textarea2" rows="4" cols="40" wrap="soft" ></textarea>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</form>
+
+</body>
+</html>
