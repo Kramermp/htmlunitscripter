@@ -9,12 +9,18 @@ function handleClick(event)
 {
 	var target = event.target
 
-	var consoleTextbox = document.getElementById("console");
-	consoleTextbox.value = "URL='" + target.baseURI + "'";
-	//consoleTextbox.value = "value='" + target.value + "', text='" + target.text + "', parent.onclick=" + target.parentNode.onclick;
+	var targetAsString = target.toString();
+	//var testString = "object XPCNativeWrapper [object [HTMLInputElement]]";
 
-	var targetVar = target.toString();
-	document.forms[0].elements[0].value += target + " fired. ";
+	//var pattern = /HTM.+Element/
+	//if( testString.search(pattern) > -1)
+	//	alert("Found! String was " + testString);
+	//else
+	//	alert("Not found! String was " + testString);
+
+	var consoleTextbox = document.getElementById("textarea1");
+	consoleTextbox.value = targetAsString + " clicked";
+	//alert(targetAsString + " clicked");
 }
 
 function handleBlur(event)
@@ -39,71 +45,7 @@ function trim(theString)
     return theString.replace(/^\s*/, "").replace(/\s*$/, "");
 }
 
-function makeXPath(event)
-{
-	var target = event.target;
-	var consoleTextbox = document.getElementById("console");
-
-	var reversedXPath = buildXPath(target);
-	reversedXPath = trim(reversedXPath);
-	var pathArray = reversedXPath.split("/");
-
-	var xPath = "";
-	pathArray.reverse();
-
-	for(element in pathArray)
-	{
-		xPath += "/" + pathArray[element];
-	}	
-	consoleTextbox.value = xPath;
-}
-
-function buildXPath(currentNode)
-{
-	var nodeName = currentNode.nodeName.toLowerCase();
-
-	if( nodeName == "html")
-	{
-		return nodeName;
-	}
-	else
-	{
-		var parent = currentNode.parentNode;
-		var children = parent.children;
-		var childrenCount = children.length;
-		var i=1;
-
-		for (child in children) 
-		{ 
-			if( children[child].nodeName == currentNode.nodeName )
-			{
-				if(children[child] == currentNode)
-				{
-					break;
-				}
-				else
-				{
-					i++;
-				}
-			}   		
-		}
-
-
-		if(childrenCount > 1)
-		{
-			return nodeName + "[" + i.toString() + "]/" + buildXPath(parent);			
-		}
-		else
-		{
-			return nodeName + "/" + buildXPath(parent);
-		}
-		
-	}
-	
-}
-
- </script>
-
+</script>
 </head>
 
 <body>
@@ -121,7 +63,7 @@ A span link:
   <a href="there.html" onClick="handleClick(event)"><span>Go to<br>second page</span></a>
 <br>
 
-<a href="there.html" onclick="handleClick(event)" name="tothere1">
+<a href="there.html" onclick="handleClick(event)">
   <img src="powerbutton.png" alt="Save And Continue button" border="0" >
 </a>
 
@@ -145,32 +87,32 @@ A span link:
 			<table>
 				<tr>
 					<td valign="top">
-						Text box with id:
+						Text box- id and name:
 						<br>
-			     		<input type="text" id="text1" onBlur="handleBlur(event)"/>&nbsp;
+			     		<input type="text" id="text1"  name="text1" onBlur="handleBlur(event)"/>&nbsp;
 						<br>
 						<br>
 			 		</td>
 					<td valign="top">
-						Text box with name:
+						Text box- no id or name:
 						<br>
 			     		<input type="text" name="text2" onBlur="handleBlur(event)"/>&nbsp;
 						<br>
 						<br>
 			 		</td>
 					<td valign="top">
-						Select list (id only):
+						Select list- id and name:
 						<br>
-						<select id='gender1' onClick="handleClick(event)">
+						<select id='gender1' name='gender1' onClick="handleClick(event)">
 							<option value='' selected='true'></option>
 							<option value='FE' selected='false'>Female</option>
 							<option value='MA' selected='false'>Male</option>
 						</select>
 					</td>
 					<td valign="top">
-						Select list (name only):
+						Select list- no id or name
 						<br>
-						<select name='gender2' onClick="handleClick(event)">
+						<select onClick="handleClick(event)">
 							<option value='' selected='true'></option>
 							<option value='FE' selected='false'>Female</option>
 							<option value='MA' selected='false'>Male</option>
@@ -186,17 +128,17 @@ A span link:
 			<table>
 				<tr>
 					<td valign="top">
-						Password box with id:
+						Password box- id and name:
 						<br>
-						<input type="password" id="password1" onBlur="handleBlur(event)"/>&nbsp;
+						<input type="password" id="password1" name='password1' onBlur="handleBlur(event)"/>&nbsp;
 					</td>
 					<td>
-						Password box with name:
+						Password box- no id or name:
 						<br>
-						<input type="password" name="password2" onBlur="handleBlur(event)"/>&nbsp;
+						<input type="password" onBlur="handleBlur(event)"/>&nbsp;
 					</td>
 					<td valign="top">
-						Generic input image with value:
+						Generic input image- no id or name:
 						<br>
 						<input type="image" value="Submit"  src="powerbutton.png" alt="Next" onclick="handleClick(event)"/>
 					</td>
@@ -211,25 +153,20 @@ A span link:
 			<table columns="4" border="1">
 				<tr>
 					<td valign="top">
-						Checkbox(value only):<input type="checkbox" value="chk-value1" onClick="makeXPath(event)"/>
+						Checkbox- no id or name:<input type="checkbox" value="chk-value1" onClick="handleClick(event)"/>
 						<br>
-						Checkbox 2(value only):<input type="checkbox" value="chk-value2" onClick="makeXPath(event)"/>
+						Checkbox 2- no id or name:<input type="checkbox" value="chk-value2" onClick="handleClick(event)"/>
 			 		</td>
 					<td valign="top">
-						Checkbox(id only):<input type="checkbox" id="chk-id1" onClick="makeXPath(event)"/>
+						Checkbox- id and name:<input type="checkbox" id="chk-id1" name="chk-id1" onClick="handleClick(event)"/>
 						<br>
-						Checkbox 2(id only):<input type="checkbox" id="chk-id2" onClick="makeXPath(event)"/>
-			 		</td>
-					<td valign="top">
-						Checkbox(name only):<input type="checkbox" name="chk-name1" onClick="makeXPath(event)"/>
-						<br>
-						Checkbox 2(name only):<input type="checkbox" name="chk-name2" onClick="makeXPath(event)"/>
+						Checkbox 2- id and name:<input type="checkbox" id="chk-id2" name="chk-id2" onClick="handleClick(event)"/>
 			 		</td>
 				</tr>
 					
 				<tr>
 					<td valign="top">
-						Radio buttons (value only):
+						Radio buttons- name + value:
 						<br>
 						<input type="radio" name="radio1" value="male" onClick="handleClick(event)"/> Male
 						<br>
@@ -237,7 +174,7 @@ A span link:
 						<br>
 					</td>
 					<td valign="top">
-						Radio buttons (id + value):
+						Radio buttons- id + name + value:
 						<br>
 						<input type="radio" name="radio2" id="radio-male" value="male2" onClick="handleClick(event)"/> Male
 						<br>
@@ -256,26 +193,32 @@ A span link:
 					<td valign="top">
 						<input type="submit" value="Submit value" onclick="handleClick(event)"/>
 						&nbsp;
-						<input type="submit" id="submit id" onclick="handleClick(event)"/>
-						&nbsp;
-						<input type="submit" name="submit name" onclick="handleClick(event)"/>
+						<input type="submit" id="submit-1" name="submit-1" onclick="handleClick(event)"/>
 					</td>
 					<td valign="top">
 						<input type="button" value="I'm an anteater!" onclick="handleClick(event)"/>
 						&nbsp;
-						<input type="button" id="generic input id" onclick="handleClick(event)"/>
+						<input type="button" id="generic-input-1" name="generic-input-1" onclick="handleClick(event)"/>			
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<button id="button1" name="button1" value="button1" onclick="handleClick(event)">Button 1: id and name</button>
 						&nbsp;
-						<input type="button" name="generic input name" onclick="handleClick(event)"/>			
+						<button value="button2" value="button2">Button 2: value</button>
+					</td>
+					<td>
+						&nbsp;
 					</td>
 				</tr>
 				<tr>
 					<td valign="top">
-						<br>Textarea with id:<br>
-		     				<textarea id="textarea1" rows="4" cols="40" wrap="soft" ></textarea>
+						<br>Textarea with id and name<br>
+		     				<textarea id="textarea1" name="textarea1" rows="4" cols="40" wrap="soft" ></textarea>
 					</td>
 					<td valign="top">
-						<br>Textarea with name:<br>
-		     				<textarea name="textarea2" rows="4" cols="40" wrap="soft" ></textarea>
+						<br>Textarea without id or name:<br>
+		     				<textarea rows="4" cols="40" wrap="soft" ></textarea>
 					</td>
 				</tr>
 			</table>
