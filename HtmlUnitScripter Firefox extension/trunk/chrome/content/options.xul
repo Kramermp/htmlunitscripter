@@ -14,10 +14,8 @@
 		<preference id="htmlunit-scripter-main-frame-filtering" name="extensions.htmlunitscripter.useMainFrameOnly" type="bool"/>
 		<preference id="htmlunit-scripter-link-preference" name="extensions.htmlunitscripter.linkPreference" type="string"/>
 		<preference id="htmlunit-scripter-element-preference" name="extensions.htmlunitscripter.elementPreference" type="string"/>
-		<preference id="htmlunit-scripter-element-without-value-preference" name="extensions.htmlunitscripter.elementWithoutValuePreference" type="string"/>
 	</preferences>
 		
-
 	<grid>
 		<rows>
 			<caption label="General options"/>			
@@ -46,7 +44,8 @@
 				
 					<radiogroup id="linkPreferences" preference-editable="true" preference="htmlunit-scripter-link-preference" 
 					onsynctopreference="return saveLinkPreferenceOptions();">
-  						<radio id="link-useIdOrName" label="Use id or name first"/>
+  						<radio id="link-useId" label="Use id first"/>
+						<radio id="link-useName" label="Use name first"/>
   						<radio id="link-useText" label="Use link text first"/>
   						<radio id="link-useHref" label="Use link href property first"/>
 						<radio id="link-useXPath" label="Use link XPath only"/>
@@ -55,24 +54,13 @@
 			</row>
 			<row>
 				<groupbox>
-					<caption label="Retrieving other elements (except textboxes, textareas and select list options)"/>
+					<caption label="Retrieving other elements"/>
 				
 					<radiogroup id="elementPreferences" preference-editable="true" preference="htmlunit-scripter-element-preference" 
 					onsynctopreference="return saveElementPreferenceOptions();">
-  						<radio id="element-useIdOrName" label="Use id or name"/>
-						<radio id="element-useValue" label="Use element value"/>
-  						<radio id="element-useXPath" label="Use XPath"/>
-					</radiogroup>
-				</groupbox>
-			</row>
-			<row>
-				<groupbox>
-					<caption label="Retrieving textboxes, textareas and select list options"/>
-				
-					<radiogroup id="elementWithoutValuePreferences" preference-editable="true" preference="htmlunit-scripter-element-without-value-preference" 
-					onsynctopreference="return saveElementWithoutValueOptions();">
-  						<radio id="element-novalue-useIdOrName" label="Use id or name"/>
-  						<radio id="element-novalue-useXPath" label="Use XPath"/>
+  						<radio id="element-useId" label="Use id first"/>
+						<radio id="element-useName" label="Use name first"/>
+  						<radio id="element-useXPath" label="Use XPath only"/>
 					</radiogroup>
 				</groupbox>
 			</row>

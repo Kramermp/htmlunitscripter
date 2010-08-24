@@ -9,7 +9,6 @@ function loadPreferenceOptions()
 {
 	loadLinkPreferenceOptions();
 	loadElementPreferenceOptions();
-	loadElementWithoutValueOptions();
 	loadLoggingOptions();
 }
 
@@ -18,19 +17,23 @@ function loadLinkPreferenceOptions()
 	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.linkPreference");
 	var radioGroup = document.getElementById("linkPreferences");
 
-	if("link-useText" == prefString)
+	if("link-useName" == prefString)
 	{
 		radioGroup.selectedIndex = 1;
 	}
-	else if("link-useHref" == prefString)
+	else if("link-useText" == prefString)
 	{
 		radioGroup.selectedIndex = 2;
 	}
-	else if("link-useXPath" == prefString)
+	else if("link-useHref" == prefString)
 	{
 		radioGroup.selectedIndex = 3;
 	}
-	else // Default- useIdOrName
+	else if("link-useXPath" == prefString)
+	{
+		radioGroup.selectedIndex = 4;
+	}
+	else // Default- useId
 	{
 		radioGroup.selectedIndex = 0;
 	}
@@ -44,19 +47,23 @@ function saveLinkPreferenceOptions()
 
 	if(radioGroup.selectedIndex == 1)
 	{
-		selectedPref = "link-useText";
+		selectedPref = "link-useName";
 	}
 	else if(radioGroup.selectedIndex == 2)
 	{
-		selectedPref = "link-useHref";
+		selectedPref = "link-useText";
 	}
 	else if(radioGroup.selectedIndex == 3)
+	{
+		selectedPref = "link-useHref";
+	}
+	else if(radioGroup.selectedIndex == 4)
 	{
 		selectedPref = "link-useXPath";
 	}
 	else
 	{
-		selectedPref = "link-useIdOrName";
+		selectedPref = "link-useId";
 	}
 
 	return selectedPref;
@@ -67,7 +74,7 @@ function loadElementPreferenceOptions()
 	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementPreference");
 	var radioGroup = document.getElementById("elementPreferences");
 
-	if("element-useValue" == prefString)
+	if("element-useName" == prefString)
 	{
 		radioGroup.selectedIndex = 1;
 	}
@@ -75,7 +82,7 @@ function loadElementPreferenceOptions()
 	{
 		radioGroup.selectedIndex = 2;
 	}
-	else // Default- useIdOrName
+	else // Default- useId
 	{
 		radioGroup.selectedIndex = 0;
 	}
@@ -90,48 +97,15 @@ function saveElementPreferenceOptions()
 
 	if(radioGroup.selectedIndex == 1)
 	{
-		selectedPref = "element-useValue";
+		selectedPref = "element-useName";
 	}
-	else if(radioGroup.selectedIndex ==2)
+	else if(radioGroup.selectedIndex == 2)
 	{
 		selectedPref = "element-useXPath";
 	}
 	else
 	{
-		selectedPref = "element-useIdOrName";
-	}
-
-	return selectedPref;
-}
-
-function loadElementWithoutValueOptions()
-{
-	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementWithoutValuePreference");
-	var radioGroup = document.getElementById("elementWithoutValuePreferences");
-
-	if("element-useXPath" == prefString)
-	{
-		radioGroup.selectedIndex = 1;
-	}
-	else // Default- useIdOrName
-	{
-		radioGroup.selectedIndex = 0;
-	}
-}
-
-function saveElementWithoutValueOptions()
-{
-	var selectedPref = "";
-
-	var radioGroup = document.getElementById("elementWithoutValuePreferences");
-
-	if(radioGroup.selectedIndex == 1)
-	{
-		selectedPref = "element-useXPath";
-	}
-	else
-	{
-		selectedPref = "element-useIdOrName";
+		selectedPref = "element-useId";
 	}
 
 	return selectedPref;

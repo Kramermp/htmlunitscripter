@@ -18,6 +18,7 @@ const LOGGING_ERROR = 1;
 var isRecording = false;
 const idsToIgnore = ["htmlunitScripterTextbox","urlbar","powerbutton-icon","closeIcon","clearTextbox","pauseButton","recordButton","currentVarTextbox","varAppendTextbox"];
 const textFieldTypes = ["text","textarea","password"];
+const elementsToIgnore = ["HTMLFormElement","HTMLTableCellElement"];
 
 var codeBuffer = "";
 var anchorBuffer = "";
@@ -195,7 +196,7 @@ var htmlunitScripter = function () {
 					theBeginUrl = url;
 				}
 
-
+				var pattern = /HTM.+Element/
 				theEndUrl = url;
 			
 				// There are a number of situations where there is something else inside the link, and the click event
@@ -218,10 +219,6 @@ var htmlunitScripter = function () {
 				else if(target.type == "radio")
 				{
 					onRadioButton(target);				
-				}
-				else if(target.type == "submit")
-				{
-					onSubmit(target);
 				}			
 				else if(targetAsString.indexOf("HTMLSelectElement") > -1)
 				{
@@ -231,13 +228,12 @@ var htmlunitScripter = function () {
 				{
 					onSelectOption(target);
 				}
-				// We don't know what the element is, but if it has an id, a name or a value, we can try to use it 
-				// as a generic HtmlInput
-				else if(targetAsString.indexOf("HTMLInputElement") >-1)
+				// We don't know what the element is, but if it has an id, a name or a value, we can use it 
+				// as a generic HtmlElement
+				else if(targetAsString.search(pattern) > -1 && targetAsString.indexOf("HTMLFormElement") < 0)
 				{
-					onHtmlInput(target);
+					onHtmlElement(target);
 				}
-
 				// We can't figure how how to handle the element, so log the error if preferences indicate logging is requested
 				else
 				{
@@ -359,7 +355,30 @@ function onHtmlLink(target, linkIsInParent, childNode)
 	{
 		linkUseXPath(target);
 	}
-	else // Assume useIdOrName
+	else if(prefString == "link-useName")
+	{
+		if(target.name)
+		{
+			linkUseName(target);
+		}
+		else if(target.id)
+		{
+			linkUseId(target);
+		}
+		else if(target.text && trim(target.text).length > 0)
+		{
+			linkUseText(target);	
+		}
+		else if(linkIsInParent)
+		{
+			linkUseParent(target, linkIsInParent, childNode);
+		}
+		else
+		{
+			linkUseHref(target);
+		}
+	}
+	else // Assume useId
 	{
 		if(target.id)
 		{
@@ -531,17 +550,7 @@ function onCheckBox(target)
 {
 	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementPreference");
 
-	if(prefString == "element-useValue")
-	{
-		if(target.value && target.value != "on")		
-			checkboxByValue(target);
-		else
-		{			
-			logMessage("Error: Value attribute unavailable for checkbox. Defaulting to XPath",LOGGING_ERROR);
-			checkboxByXPath(target);
-		}	
-	}
-	else if(prefString == "element-useIdOrName")
+	if(prefString == "element-useId")
 	{
 		if(target.id)		
 			checkboxById(target);
@@ -553,37 +562,23 @@ function onCheckBox(target)
 			checkboxByXPath(target);
 		}
 	}
+	else if(prefString == "element-useName")
+	{
+		if(target.name)		
+			checkboxByName(target);
+		else if(target.id)
+			checkboxById(target);	
+		else
+		{			
+			logMessage("Error: Id and name attributes unavailable for checkbox. Defaulting to XPath", LOGGING_ERROR);
+			checkboxByXPath(target);
+		}
+	}
 	else // Default- use XPath
 	{
 		checkboxByXPath(target);
 	}
 } // End onCheckBox()
-
-function checkboxByValue(target)
-{ 					
-	var nextNum = getNextNum();
-	var iterableNum = getNextNum();
-	var iteratorNum = getNextNum();
-
-	var theCode = tabs + "HtmlInput checkbox" + nextNum + " = null;\n";	
-	theCode += tabs + "Iterable<HtmlElement> iterable" + iterableNum + " = page.getAllHtmlChildElements();\n";
-	theCode += tabs + "Iterator<HtmlElement> i" + iteratorNum + " = iterable" + iterableNum + ".iterator();\n";
-	theCode += tabs + "while(i" + iteratorNum + ".hasNext())\n";
-	theCode += tabs + "{\n";
- 	theCode += tabs + "     HtmlElement element = i" + iteratorNum + ".next();\n";
- 	theCode += tabs + "     if(element instanceof HtmlInput)\n";
- 	theCode += tabs + "     {\n";
-	theCode += tabs + "          HtmlInput input = (HtmlInput) element;\n";
-	theCode += tabs + "          if(\"" + target.value + "\".equals(input.getValueAttribute() ) )\n";
-	theCode += tabs + "          {\n";
-	theCode += tabs + "               checkbox" + nextNum + " = input;\n";
-	theCode += tabs + "               break;\n";
-	theCode += tabs + "          }\n";
- 	theCode += tabs + "     }\n";
-	theCode += tabs + "}\n";
-	theCode += tabs + "checkbox" + nextNum + ".click();\n";
-	codeBuffer = codeBuffer + theCode + "\n";
-}
 
 function checkboxById(target)
 {
@@ -621,17 +616,7 @@ function onRadioButton(target)
 {
 	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementPreference");
 
-	if(prefString == "element-useValue")
-	{
-		if(target.value)		
-			radioButtonByValue(target);
-		else
-		{			
-			logMessage("Error: Value attribute unavailable for radio button. Defaulting to XPath", LOGGING_ERROR);
-			radioButtonByXPath(target);
-		}
-	}
-	else if(prefString == "element-useIdOrName")
+	if(prefString == "element-useId")
 	{
 		if(target.id)		
 			radioButtonById(target);
@@ -643,37 +628,23 @@ function onRadioButton(target)
 			radioButtonByXPath(target);
 		}
 	}
+	else if(prefString == "element-useName")
+	{
+		if(target.name)		
+			radioButtonByName(target);
+		else if(target.id)
+			radioButtonById(target);
+		else
+		{			
+			logMessage("Error: Id and name attributes unavailable for radio button. Defaulting to XPath", LOGGING_ERROR);
+			radioButtonByXPath(target);
+		}
+	}
 	else // Default- use XPath
 	{
 		radioButtonByXPath(target);
 	}
 } // End onRadioButton()
-
-function radioButtonByValue(target)
-{
-	var nextNum = getNextNum();		
-	var iterableNum = getNextNum();
-	var iteratorNum = getNextNum();
-	
-	theCode = tabs + "HtmlRadioButtonInput radioButton" + nextNum + " = null;\n";
-	theCode += tabs + "Iterable<HtmlElement> iterable" + iterableNum + " = page.getAllHtmlChildElements();\n";
-	theCode += tabs + "Iterator<HtmlElement> i" + iteratorNum + " = iterable" + iterableNum + ".iterator();\n";
-	theCode += tabs + "while(i" + iteratorNum + ".hasNext())\n";
-	theCode += tabs + "{\n";
- 	theCode += tabs + "     HtmlElement element = i" + iteratorNum + ".next();\n";
- 	theCode += tabs + "     if(element instanceof HtmlRadioButtonInput)\n";
- 	theCode += tabs + "     {\n";
-	theCode += tabs + "          HtmlRadioButtonInput input = (HtmlRadioButtonInput) element;\n";
-	theCode += tabs + "          if(\"" + target.value + "\".equals(input.getValueAttribute() ) )\n";
-	theCode += tabs + "          {\n";
-	theCode += tabs + "               radioButton" + nextNum + " = input;\n";
-	theCode += tabs + "               break;\n";
-	theCode += tabs + "          }\n";
- 	theCode += tabs + "     }\n";
-	theCode += tabs + "}\n";
-	theCode += tabs + "radioButton" + nextNum + ".click();\n";
-	codeBuffer = codeBuffer + theCode + "\n";
-}
 
 function radioButtonById(target)
 {
@@ -726,116 +697,29 @@ function radioButtonByXPath(target)
 	codeBuffer = codeBuffer + theCode + "\n";
 }
 
-function onSubmit(target)
-{
-	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementPreference");
-	var url = urlBar.value;	
-
-	if(prefString == "element-useValue")
-	{
-		if(target.value)		
-			submitByValue(target, url);
-		else
-		{			
-			logMessage("Error: Value attribute unavailable for submit button. Defaulting to XPath", LOGGING_ERROR);
-			submitByXPath(target,url);
-		}
-
-	}
-	else if(prefString == "element-useIdOrName")
-	{			
-		if(target.id)		
-			submitById(target,url);
-		else if(target.name)
-			submitByName(target,url);
-		else
-		{			
-			logMessage("Error: Id and name attributes unavailable for submit button. Defaulting to XPath", LOGGING_ERROR);
-			submitByXPath(target,url);
-		}
-	}
-	else
-	{
-		submitByXPath(target,url);
-	}
-} // End onSubmit()
-
-function submitByValue(target, url)
-{
-	var nextNum = getNextNum();
-	var iterableNum = getNextNum();
-	var iteratorNum = getNextNum();
-
-	var theCode = addSavePagesStatement(url);
-	theCode += tabs + "HtmlSubmitInput submitButton" + nextNum + " = null;\n";
-	theCode += tabs + "Iterable<HtmlElement> iterable" + iterableNum + " = page.getAllHtmlChildElements();\n";
-	theCode += tabs + "Iterator<HtmlElement> i" + iteratorNum + " = iterable" + iterableNum + ".iterator();\n";
-	theCode += tabs + "while(i" + iteratorNum + ".hasNext())\n";
-	theCode += tabs + "{\n";
- 	theCode += tabs + "     HtmlElement element = i" + iteratorNum + ".next();\n";
- 	theCode += tabs + "     if(element instanceof HtmlSubmitInput)\n";
- 	theCode += tabs + "     {\n";
-	theCode += tabs + "          HtmlSubmitInput input = (HtmlSubmitInput) element;\n";
-	theCode += tabs + "          if(\"" + target.value + "\".equals(input.getValueAttribute() ) )\n";
-	theCode += tabs + "          {\n";
-	theCode += tabs + "               submitButton" + nextNum + " = input;\n";
-	theCode += tabs + "               break;\n";
-	theCode += tabs + "          }\n";
- 	theCode += tabs + "     }\n";
-	theCode += tabs + "}\n";
-	theCode += tabs + "page = submitButton" + nextNum + ".click();\n";
-	anchorBuffer = theCode + "\n";
-}
-
-function submitById(target,url)
-{
-	var nextNum = getNextNum();
-
-	var theCode = addSavePagesStatement(url);
-	
-	theCode += tabs + "HtmlSubmitInput submitButton" + nextNum + " = (HtmlSubmitInput) page.getElementById(\"" + target.id + "\");";
-	theCode += tabs + "\n";
-	theCode += tabs + "page = submitButton" + nextNum + ".click();\n";
-	anchorBuffer = theCode + "\n";
-}
-
-function submitByName(target,url)
-{
-	var nextNum = getNextNum();
-
-	var theCode = addSavePagesStatement(url);
-	
-	theCode += tabs + "HtmlSubmitInput submitButton" + nextNum + " = (HtmlSubmitInput) page.getElementByName(\"" + target.name + "\");";
-	theCode += tabs + "\n";
-	theCode += tabs + "page = submitButton" + nextNum + ".click();\n";
-	anchorBuffer = theCode + "\n";
-}
-
-function submitByXPath(target,url)
-{
-	var listNum = getNextNum();
-	var elementNum = getNextNum();
-
-	var xPath = makeXPath(target,true);
-
-	var theCode = addSavePagesStatement(url);
-	theCode += tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\"" + xPath + "\");\n";
-    	theCode += tabs + "HtmlSubmitInput submitButton" + elementNum + " = (HtmlSubmitInput) elements" + listNum + ".get(0);\n";
-    	theCode += tabs + "page = submitButton" + elementNum + ".click();\n";
-	anchorBuffer = theCode + "\n";
-}
-
 function onSelectOption(target)
 {
-	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementWithoutValuePreference");
+	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementPreference");
 	var selectList = target.parentNode;	
 
-	if(prefString == "element-useIdOrName")
+	if(prefString == "element-useId")
 	{
 		if(selectList.id)		
 			selectOptionById(target);
 		else if(selectList.name)
 			selectOptionByName(target);
+		else
+		{
+			logMessage("Error: Id and name attributes unavailable for select list. Defaulting to XPath", LOGGING_ERROR);
+			selectOptionByXPath(target);
+		}
+	}
+	else if(prefString == "element-useName")
+	{
+		if(selectList.name)		
+			selectOptionByName(target);
+		else if(selectList.id)
+			selectOptionById(target);
 		else
 		{
 			logMessage("Error: Id and name attributes unavailable for select list. Defaulting to XPath", LOGGING_ERROR);
@@ -922,12 +806,14 @@ function selectOptionByXPath(target)
 	codeBuffer = codeBuffer + theCode + "\n";
 }
 
-function onHtmlInput(target)
+function onHtmlElement(target)
 {
 	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementPreference");
 	var url = urlBar.value;	
 
 	var foundTextFieldType = false;
+	var foundElementToIgnore = false;
+
 	for (i in textFieldTypes) 
 	{ 
    		if(textFieldTypes[i] == target.type)
@@ -935,43 +821,56 @@ function onHtmlInput(target)
 			foundTextFieldType = true;
 			break;
 		}
+	}
+
+	for (i in elementsToIgnore)
+	{
+		if(target.toString().indexOf(elementsToIgnore[i]) > -1 )
+		{
+			foundElementToIgnore = true;
+			break;
+		}
 	}		
 
 	// We don't ever want this to accidentally fire for text fields, for the case where neither the id nor the name was set on the text field. In
 	// this case, it would try to pick up the value inside the text field, which could vary according to what the user typed.
-	if(!foundTextFieldType)
+	//
+	// We also don't want this to fire for elements like the HTMLFormElement and the HTMLTableCellElement.
+	if(!foundTextFieldType && !foundElementToIgnore)
 	{
-		if(prefString == "element-useIdOrName")
+		if(prefString == "element-useId")
 		{
 			if(target.id)			
-				htmlInputById(target,url);
+				htmlElementById(target,url);
 			else if(target.name)
-				htmlInputByName(target,url);
+				htmlElementByName(target,url);
 			else
 			{				
-				logMessage("Error: Id and name attributes unavailable for input. Defaulting to XPath", LOGGING_ERROR);
-				htmlInputByXPath(target,url);
+				logMessage("Error: Id and name attributes unavailable for html element  '" + target.toString() +"' Defaulting to XPath", LOGGING_ERROR);
+				htmlElementByXPath(target,url);
 			}
 		}
-		else if(prefString == "element-useValue")
+		else if(prefString == "element-useName")
 		{
-			if(target.value)			
-				htmlInputByValue(target,url);
+			if(target.name)			
+				htmlElementByName(target,url);
+			else if(target.id)
+				htmlElementById(target,url);
 			else
 			{				
-				logMessage("Error: Value attribute unavailable for input. Defaulting to XPath", LOGGING_ERROR);
-				htmlInputByXPath(target,url);
+				logMessage("Error: Id and name attributes unavailable for html element '" + target.toString() +"' Defaulting to XPath", LOGGING_ERROR);
+				htmlElementByXPath(target,url);
 			}
 		}
 		else
 		{
-			htmlInputByXPath(target,url);
+			htmlElementByXPath(target,url);
 		}
 	}
 	
-} // End onHtmlInput
+} // End onHtmlElement
 
-function htmlInputById(target, url)
+function htmlElementById(target, url)
 {
 	var nextNum = getNextNum();
 
@@ -982,7 +881,7 @@ function htmlInputById(target, url)
 	anchorBuffer = anchorBuffer + theCode + "\n";
 }
 
-function htmlInputByName(target,url)
+function htmlElementByName(target,url)
 {
 	var nextNum = getNextNum();
 
@@ -993,34 +892,7 @@ function htmlInputByName(target,url)
 	anchorBuffer = anchorBuffer + theCode + "\n";
 }
 
-function htmlInputByValue(target,url)
-{
-	var nextNum = getNextNum();		
-	var iterableNum = getNextNum();
-	var iteratorNum = getNextNum();
-
-	var theCode = addSavePagesStatement(url);
-	theCode += tabs + "HtmlInput theElement" + nextNum + " = null;\n";
-	theCode += tabs + "Iterable<HtmlElement> iterable" + iterableNum + " = page.getAllHtmlChildElements();\n";
-	theCode += tabs + "Iterator<HtmlElement> i" + iteratorNum + " = iterable" + iterableNum + ".iterator();\n";
-	theCode += tabs + "while(i" + iteratorNum + ".hasNext())\n";
-	theCode += tabs + "{\n";
- 	theCode += tabs + "     HtmlElement element = i" + iteratorNum + ".next();\n";
-	theCode += tabs + "     if(element instanceof HtmlInput)\n";
-  	theCode += tabs + "     {\n";
-	theCode += tabs + "          HtmlInput input = (HtmlInput) element;\n";
-	theCode += tabs + "          if(\"" + target.value + "\".equals(input.getValueAttribute() ) )\n";
-    	theCode += tabs + "          {\n";
-    	theCode += tabs + "               theElement" + nextNum + " = input;\n";
-    	theCode += tabs + "               break;\n";
-    	theCode += tabs + "          }\n";
-  	theCode += tabs + "     }\n";
-	theCode += tabs + "}\n";
-	theCode += tabs + "page = theElement" + nextNum + ".click();\n";
-	anchorBuffer = anchorBuffer + theCode + "\n";
-}
-
-function htmlInputByXPath(target,url)
+function htmlElementByXPath(target,url)
 {
 	var listNum = getNextNum();
 	var elementNum = getNextNum();
@@ -1029,8 +901,8 @@ function htmlInputByXPath(target,url)
 
 	var theCode = addSavePagesStatement(url);
 	theCode += tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\"" + xPath + "\");\n";
-    	theCode += tabs + "HtmlInput input" + elementNum + " = (HtmlInput) elements" + listNum + ".get(0);\n";
-    	theCode += tabs + "page = input" + elementNum + ".click();\n";
+    	theCode += tabs + "HtmlElement element" + elementNum + " = elements" + listNum + ".get(0);\n";
+    	theCode += tabs + "page = element" + elementNum + ".click();\n";
 	anchorBuffer = theCode + "\n";
 }
 
@@ -1039,9 +911,9 @@ function htmlInputByXPath(target,url)
 */
 function onTextArea(target)
 {
-	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementWithoutValuePreference");
+	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementPreference");
 				
-	if(prefString == "element-useIdOrName")
+	if(prefString == "element-useId")
 	{
 		if(target.id)
 		{
@@ -1050,6 +922,23 @@ function onTextArea(target)
 		}		
 		else if(target.name)
 			textAreaByName(target);
+		else
+		{			
+			logMessage("Error: Id and name attributes unavailable for textarea. Defaulting to XPath", LOGGING_ERROR);
+			textAreaByXPath(target);
+		}
+	}
+	else if(prefString == "element-useName")
+	{
+		if(target.name)
+		{
+			textAreaByName(target);
+		}		
+		else if(target.id)
+		{
+			if( !isSystemId(target.id) )
+				textAreaById(target);
+		}	
 		else
 		{			
 			logMessage("Error: Id and name attributes unavailable for textarea. Defaulting to XPath", LOGGING_ERROR);
@@ -1095,9 +984,9 @@ function textAreaByXPath(target)
 
 function onText(target)
 {
-	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementWithoutValuePreference");
+	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementPreference");
 			
-	if(prefString == "element-useIdOrName")
+	if(prefString == "element-useId")
 	{
 		if(target.id)
 		{
@@ -1106,6 +995,21 @@ function onText(target)
 		}
 		else if(target.name)
 			textByName(target);
+		else
+		{			
+			logMessage("Error: Id and name attributes unavailable for textbox. Defaulting to XPath", LOGGING_ERROR);
+			textByXPath(target);
+		}
+	}
+	else if(prefString == "element-useName")
+	{
+		if(target.name)
+			textByName(target);
+		else if(target.id)
+		{
+			if( !isSystemId(target.id))		
+				textById(target);
+		}
 		else
 		{			
 			logMessage("Error: Id and name attributes unavailable for textbox. Defaulting to XPath", LOGGING_ERROR);
@@ -1151,9 +1055,9 @@ function textByXPath(target)
 
 function onPassword(target)
 {			
-	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementWithoutValuePreference");
+	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementPreference");
 	
-	if(prefString == "element-useIdOrName")
+	if(prefString == "element-useId")
 	{
 		if(target.id)
 		{
@@ -1162,6 +1066,21 @@ function onPassword(target)
 		}
 		else if(target.name)
 			passwordByName(target);
+		else
+		{			
+			logMessage("Error: Id and name attributes unavailable for password box. Defaulting to XPath", LOGGING_ERROR);
+			passwordByXPath(target);
+		}
+	}
+	else if(prefString == "element-useName")
+	{
+		if(target.name)
+			passwordByName(target);
+		else if(target.id)
+		{
+			if(!isSystemId(target.id))
+				passwordById(target);
+		}
 		else
 		{			
 			logMessage("Error: Id and name attributes unavailable for password box. Defaulting to XPath", LOGGING_ERROR);
