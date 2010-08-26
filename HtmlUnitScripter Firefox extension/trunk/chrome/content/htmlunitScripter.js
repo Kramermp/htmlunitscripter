@@ -539,7 +539,8 @@ function linkUseXPath(target)
 	var xPath = makeXPath(target,false);
 
 	var theCode = addSavePagesStatement(url);
-	theCode += tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\"" + xPath + "\");\n";
+	theCode += tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\n";
+	theCode += tabs + "     \"" + xPath + "\");\n";
         theCode += tabs + "HtmlElement element" + elementNum + " = elements" + listNum + ".get(0);\n";
         theCode += tabs + "page = element" + elementNum + ".click();\n";
 	
@@ -605,7 +606,8 @@ function checkboxByXPath(target)
 
 	var xPath = makeXPath(target,true);
 
-	var theCode = tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\"" + xPath + "\");\n";
+	var theCode = tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\n";
+	theCode += tabs + "     \"" + xPath + "\");\n";
         theCode += tabs + "HtmlInput checkbox" + elementNum + " = (HtmlInput) elements" + listNum + ".get(0);\n";
         theCode += tabs + "checkbox" + elementNum + ".click();\n";
 	codeBuffer = codeBuffer + theCode + "\n";
@@ -691,7 +693,8 @@ function radioButtonByXPath(target)
 
 	var xPath = makeXPath(target,true);
 
-	var theCode = tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\"" + xPath + "\");\n";
+	var theCode = tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\n";
+	theCode += tabs + "     \"" + xPath + "\");\n";
     	theCode += tabs + "HtmlInput radioButton" + elementNum + " = (HtmlInput) elements" + listNum + ".get(0);\n";
     	theCode += tabs + "radioButton" + elementNum + ".click();\n";
 	codeBuffer = codeBuffer + theCode + "\n";
@@ -789,7 +792,8 @@ function selectOptionByXPath(target)
 	//var lastSlash = xPath.lastIndexOf("/");
 	//var selectListXPath = xPath.substring(0,lastSlash);
 
-	var theCode = tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\"" + xPath + "\");\n";        
+	var theCode = tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\n";
+	theCode += tabs + "     \"" + xPath + "\");\n";        
 	theCode += tabs + "HtmlSelect selectField" + elementNum + " = (HtmlSelect) elements" + listNum + ".get(0);\n";		
 
 	theCode += tabs + "List<HtmlOption> options" + optionsNum + " = selectField" + elementNum + ".getOptions();\n";
@@ -897,10 +901,23 @@ function htmlElementByXPath(target,url)
 	var listNum = getNextNum();
 	var elementNum = getNextNum();
 
-	var xPath = makeXPath(target,true);
+	var xPath;
+
+	// Buttons are a special case- the type is reported as "submit", even though this is not specified in the 
+	// html code of the actual button.
+	if(target.toString().indexOf("HTMLButton") > -1)
+	{
+		xPath = makeXPath(target,false);
+	}
+	else
+	{
+		xPath = makeXPath(target,true);
+	}
+	
 
 	var theCode = addSavePagesStatement(url);
-	theCode += tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\"" + xPath + "\");\n";
+	theCode += tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\n";
+	theCode += tabs + "     \"" + xPath + "\");\n";
     	theCode += tabs + "HtmlElement element" + elementNum + " = elements" + listNum + ".get(0);\n";
     	theCode += tabs + "page = element" + elementNum + ".click();\n";
 	anchorBuffer = theCode + "\n";
@@ -976,7 +993,8 @@ function textAreaByXPath(target)
 
 	var xPath = makeXPath(target,false);
 
-	var theCode = tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\"" + xPath + "\");\n";        
+	var theCode = tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\n";
+	theCode += tabs + "     \"" + xPath + "\");\n";        
 	theCode += tabs + "HtmlTextArea textArea" + elementNum + " = (HtmlTextArea) elements" + listNum + ".get(0);\n";		
 	theCode += tabs + "textArea" + elementNum + ".setTextContent(\"" + target.value + "\");\n";
 	codeBuffer = codeBuffer + theCode + "\n";
@@ -1047,7 +1065,8 @@ function textByXPath(target)
 
 	var xPath = makeXPath(target,true);
 
-	var theCode = tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\"" + xPath + "\");\n";        
+	var theCode = tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\n";
+	theCode += tabs + "     \"" + xPath + "\");\n";        
 	theCode += tabs + "HtmlTextInput textField" + elementNum + " = (HtmlTextInput) elements" + listNum + ".get(0);\n";		
 	theCode += tabs + "textField" + elementNum + ".setValueAttribute(\"" + target.value + "\");\n";
 	codeBuffer = codeBuffer + theCode + "\n";
@@ -1116,7 +1135,8 @@ function passwordByXPath(target)
 
 	var xPath = makeXPath(target,true);
 
-	var theCode = tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\"" + xPath + "\");\n";        
+	var theCode = tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\n";
+	theCode += tabs + "     \"" + xPath + "\");\n";        
 	theCode += tabs + "HtmlPasswordInput passwordField" + elementNum + " = (HtmlPasswordInput) elements" + listNum + ".get(0);\n";		
 	theCode += tabs + "passwordField" + elementNum + ".setValueAttribute(\"" + target.value + "\");\n";
 	codeBuffer = codeBuffer + theCode + "\n";
@@ -1202,12 +1222,15 @@ function makeXPath(target, useTargetType)
 	var tagName = target.tagName.toLowerCase();
 
 	var query;
+
 	if(useTargetType)	
-		query = "(//" + tagName + "[@type = '" + target.type + "'])";
+		query = "(//" + tagName + "[translate(@type, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + target.type + "'])";
 	else
 		query = "(//" + tagName + ")";
 
-	var result = content.document.evaluate(query, content.document.documentElement, null,
+	// We need to run an XPath query against the html page so that we can figure out which element the user clicked on.
+	// Then we can add that number to the returned XPath query.
+	var result = target.ownerDocument.evaluate(query, target.ownerDocument.documentElement, null,
                  XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 
 	for (var i=0, len=result.snapshotLength; i < len; i++) 
@@ -1219,37 +1242,10 @@ function makeXPath(target, useTargetType)
 	}
 
 	if(result.snapshotLength == 0)
-	{				
-		if(useTargetType)
-		{
-			logMessage("Attempting to run 2nd XPath query without type attribute", LOGGING_VERBOSE);			
-			query = "(//" + tagName + ")";
-
-			result = content.document.evaluate(query, content.document.documentElement, null,
-                 		XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-
-			for (var i=0, len=result.snapshotLength; i < len; i++) 
-			{
-				if(target == result.snapshotItem(i))
-				{
-					query += "[" + (i+1) + "]";
-					logMessage("2nd XPath query: element was found, but type attribute is unavailable; query is " + query, LOGGING_VERBOSE);
-				}    		
-			}
-			
-			if(result.snapshotLength == 0)
-			{
-				logMessage("Numbered element could not be found after 2nd XPath query; 2nd query was " + query, LOGGING_ERROR);		
-				query = "";
-			}		
-		}
-		else
-		{		
-			logMessage("Numbered element could not be found after XPath query; query was " + query, LOGGING_ERROR);			
-			query = "";
-		}		
-	}
-		
+	{						
+		logMessage("Numbered element could not be found after XPath query; query was " + query, LOGGING_ERROR);			
+		query = "";		
+	}		
 
 	return query;	
 }
