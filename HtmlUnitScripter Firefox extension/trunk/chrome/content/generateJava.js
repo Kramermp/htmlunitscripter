@@ -121,28 +121,28 @@ var generateJava = function () {
 		     	theCode += "               System.err.println( \"FailingHttpStatusCodeException thrown:\" + e1.getMessage() );\n";
 		     	theCode += "               e1.printStackTrace();\n";
 				theCode += nl;
-				theCode += addSavePagesStatement(endUrl,"               ");	
+				theCode += addErrorPageStatement(endUrl,"               ");	
 				theCode += "          }\n";
 				theCode += "          catch ( MalformedURLException e1 )\n";
 				theCode += "          {\n";
 		     	theCode += "               System.err.println( \"MalformedURLException thrown:\" + e1.getMessage() );\n";
 		     	theCode += "               e1.printStackTrace();\n";
 				theCode += nl;	
-               	theCode += addSavePagesStatement(endUrl,"               ");
+               	theCode += addErrorPageStatement(endUrl,"               ");
 				theCode += "           }\n";
 				theCode += "          catch ( IOException e1 )\n";
 				theCode += "          {\n";
 		        theCode += "               System.err.println( \"IOException thrown:\" + e1.getMessage() );\n";
 		        theCode += "               e1.printStackTrace();\n";
 				theCode += nl;	
-               	theCode += addSavePagesStatement(endUrl,"               ");
+               	theCode += addErrorPageStatement(endUrl,"               ");
 				theCode += "          }\n";
 				theCode += "          catch( Exception e )\n";
           		theCode += "          {\n";
                	theCode += "               System.err.println( \"General exception thrown:\" + e.getMessage() );\n";
                	theCode += "               e.printStackTrace();\n";
                	theCode += nl;	
-               	theCode += addSavePagesStatement(endUrl,"               ");
+               	theCode += addErrorPageStatement(endUrl,"               ");
           		theCode += "          }\n";
 				theCode += "     }\n";
 				theCode += "}\n";
@@ -176,3 +176,23 @@ function addSavePagesStatement(url,whitespace)
 
 	return theCode;
 }
+
+function addErrorPageStatement(url,whitespace)
+{
+	var addStatement = prefManager.getBoolPref("extensions.htmlunitscripter.printProgress");
+
+	var theCode = "";
+	if(addStatement)
+	{
+		theCode = whitespace  + "if( savePagesLocally )\n";
+		theCode += whitespace + "{\n";
+		theCode += whitespace + "     String fullPath = pageSaver.savePageLocally(page, \"error_page.html\", url);\n";
+		theCode += whitespace + "     System.out.println(\"Page with title '\" + page.getTitleText() + \"' saved to \" + fullPath);\n";
+		theCode += whitespace + "}\n";
+		theCode += "\n";
+	}
+
+	return theCode;
+}
+
+
