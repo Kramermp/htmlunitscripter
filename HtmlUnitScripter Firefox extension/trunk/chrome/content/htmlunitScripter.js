@@ -18,7 +18,7 @@ const LOGGING_ERROR = 1;
 var isRecording = false;
 const idsToIgnore = ["htmlunitScripterTextbox","urlbar","powerbutton-icon","closeIcon","clearTextbox","pauseButton","recordButton","currentVarTextbox","varAppendTextbox"];
 const textFieldTypes = ["text","textarea","password"];
-const elementsToIgnore = ["HTMLFormElement","HTMLTableCellElement"];
+const elementsToIgnore = ["HTMLFormElement","HTMLTableCellElement","HTMLDivElement"];
 
 var codeBuffer = "";
 var anchorBuffer = "";
@@ -210,36 +210,42 @@ var htmlunitScripter = function () {
 
 				if(target.href)
 				{												
+					logMessage("Processing href element:" + target.toString(),LOGGING_VERBOSE);					
 					onHtmlLink(target, linkIsInParent, childNode);				
 				}
 				else if(target.type == "checkbox")
 				{
+					logMessage("Processing checkbox element:" + target.toString(),LOGGING_VERBOSE);					
 					onCheckBox(target);				
 				}
 				else if(target.type == "radio")
 				{
+					logMessage("Processing radio button element:" + target.toString(),LOGGING_VERBOSE);					
 					onRadioButton(target);				
 				}			
 				else if(targetAsString.indexOf("HTMLSelectElement") > -1)
 				{
+					logMessage("Ignoring select element:" + target.toString(),LOGGING_VERBOSE);					
 					// Ignore select lists. We are only interested in the option the user selected.
 				}
 				else if(targetAsString.indexOf("HTMLOptionElement") > -1)
 				{
+					logMessage("Processing select option element:" + target.toString(),LOGGING_VERBOSE);					
 					onSelectOption(target);
 				}
 				// We don't know what the element is, but if it has an id, a name or a value, we can use it 
 				// as a generic HtmlElement
 				else if(targetAsString.search(pattern) > -1 && targetAsString.indexOf("HTMLFormElement") < 0)
 				{
+					logMessage("Processing generic element:" + target.toString(),LOGGING_VERBOSE);					
 					onHtmlElement(target);
 				}
 				// We can't figure how how to handle the element, so log the error if preferences indicate logging is requested
 				else
 				{
-					if(!isSystemId(target.id))
+					if(!isSystemId(target.id) && targetAsString.indexOf("XULElement") < 0)
 					{				
-						logMessage("Could not identify clicked element:" + target.toString(),LOGGING_VERBOSE);
+						logMessage("Could not identify clicked element:" + targetAsString, LOGGING_VERBOSE);
 					}
 				}
 			}
@@ -260,14 +266,17 @@ var htmlunitScripter = function () {
 
 				if(target.type == "textarea")
 				{
+					logMessage("Processing textarea element:" + target.toString(),LOGGING_VERBOSE);					
 					onTextArea(target);				
 				}
 				else if(target.type == "text")
 				{
+					logMessage("Processing text element:" + target.toString(),LOGGING_VERBOSE);					
 					onText(target);
 				}
 				else if(target.type == "password")
 				{
+					logMessage("Processing password element:" + target.toString(),LOGGING_VERBOSE);					
 					onPassword(target);
 				}
 			}
