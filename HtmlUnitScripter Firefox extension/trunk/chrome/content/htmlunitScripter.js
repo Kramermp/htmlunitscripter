@@ -18,7 +18,7 @@ const LOGGING_ERROR = 1;
 var isRecording = false;
 const idsToIgnore = ["htmlunitScripterTextbox","urlbar","powerbutton-icon","closeIcon","clearTextbox","pauseButton","recordButton","currentVarTextbox","varAppendTextbox"];
 const textFieldTypes = ["text","textarea","password"];
-const elementsToIgnore = ["HTMLFormElement","HTMLTableCellElement","HTMLDivElement"];
+const elementsToIgnore = ["HTMLFormElement","HTMLTableCellElement","HTMLDivElement","HTMLTableElement","HTMLHtmlElement","HTMLTableSectionElement","HTMLFormElement"];
 
 var codeBuffer = "";
 var anchorBuffer = "";
@@ -235,7 +235,7 @@ var htmlunitScripter = function () {
 				}
 				// We don't know what the element is, but if it has an id, a name or a value, we can use it 
 				// as a generic HtmlElement
-				else if(targetAsString.search(pattern) > -1 && targetAsString.indexOf("HTMLFormElement") < 0)
+				else if(targetAsString.search(pattern) > -1)
 				{
 					logMessage("Processing generic element:" + target.toString(),LOGGING_VERBOSE);					
 					onHtmlElement(target);
@@ -510,7 +510,6 @@ function linkUseHref(target)
 	var nextNum = getNextNum();
 	var listNum = getNextNum();
 	var stringAnchorToFindNum = getNextNum();
-	var stringElementsNum = getNextNum();
 
 	var theCode = addSavePagesStatement(url);
 	theCode += tabs + "HtmlAnchor theAnchor" + nextNum + " = null;\n";
@@ -841,6 +840,7 @@ function onHtmlElement(target)
 		if(target.toString().indexOf(elementsToIgnore[i]) > -1 )
 		{
 			foundElementToIgnore = true;
+			logMessage("Ignoring generic element:" + target.toString(),LOGGING_VERBOSE);
 			break;
 		}
 	}		
