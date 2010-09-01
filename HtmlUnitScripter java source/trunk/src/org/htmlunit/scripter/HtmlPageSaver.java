@@ -152,7 +152,7 @@ public class HtmlPageSaver
                {
             	   writer.write( "&nbsp;<a href=\"output_" + (pageNum+1) + ".html\">Next</a>\n" );
                    
-                   writer.write( "&nbsp;<a href=\"error_page.html\">Error page</a>\n");
+                   writer.write( "&nbsp;<a href=\"error_page.html\">Error ppage</a>\n<br>\n");
                }
                
                
