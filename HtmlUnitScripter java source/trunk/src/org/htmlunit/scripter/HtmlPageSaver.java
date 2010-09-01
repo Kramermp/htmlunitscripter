@@ -70,13 +70,20 @@ public class HtmlPageSaver
                File[] files = outputFolder.listFiles();
                for(File file: files)
                {
-                    file.delete();
+                   if( (file.getName().indexOf("output_") > -1 && file.getName().indexOf(".html") > -1) 
+                		   || file.getName().indexOf("error_page.html") > -1)
+                   {
+                	   file.delete();
+                   }
+            	   
                }
-               
-               outputFolder.delete();
+          }
+          else
+          {
+        	  outputFolder.mkdir();
           }
           
-          outputFolder.mkdir();
+          
      }
      
      /**
@@ -152,7 +159,7 @@ public class HtmlPageSaver
                {
             	   writer.write( "&nbsp;<a href=\"output_" + (pageNum+1) + ".html\">Next</a>\n" );
                    
-                   writer.write( "&nbsp;<a href=\"error_page.html\">Error ppage</a>\n<br>\n");
+                   writer.write( "&nbsp;<a href=\"error_page.html\">Error page</a>\n<br>\n");
                }
                
                
