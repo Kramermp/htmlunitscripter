@@ -31,7 +31,7 @@ public class SourceForgeTest
      {
           HtmlPage page = null;
           boolean savePagesLocally = false;
-          String url = "http://htmlunit.sourceforge.net/";
+          String url = "http://www.google.com/";
 
           WebClient webClient = new WebClient( BrowserVersion.FIREFOX_3 );
           webClient.setThrowExceptionOnScriptError(false);
@@ -59,35 +59,47 @@ public class SourceForgeTest
           {
                page = webClient.getPage( url );
 
-               System.out.println("Current page: SourceForge.net: Download and Develop Open Source Software for Free");
-
-               // Current page:
-               // Title=SourceForge.net: Download and Develop Open Source Software for Free
-               // URL=http://sourceforge.net/
-
-               HtmlTextInput textField1 = (HtmlTextInput) page.getElementByName("words");
-               textField1.setValueAttribute("htmlunit");
+               HtmlTextInput textField1 = (HtmlTextInput) page.getElementByName("q");
+               textField1.setValueAttribute("HtmlUnit");
 
                if( savePagesLocally )
                {
-                    url = "http://sourceforge.net/";
+                    url = "http://www.google.com/";
                     String fullPath = pageSaver.savePageLocally(page, url);
                     System.out.println("Page with title '" + page.getTitleText() + "' saved to " + fullPath);
                }
 
-               List<HtmlElement> elements2 = (List<HtmlElement>) page.getByXPath("(//button[@type = 'submit'])[1]");
-               HtmlSubmitInput submitButton3 = (HtmlSubmitInput) elements2.get(0);
-               page = submitButton3.click();
-
-               System.out.println("Current page: SourceForge.net: Software Search");
-
-               // Current page:
-               // Title=SourceForge.net: Software Search
-               // URL=http://sourceforge.net/search/?type_of_search=soft&words=htmlunit
+               HtmlElement theElement2 = (HtmlElement) page.getElementByName("btnG");               
+               page = theElement2.click();
 
                if( savePagesLocally )
                {
-                    url = "http://sourceforge.net/search/?type_of_search=soft&words=htmlunit";
+                    url = "http://www.google.com/#hl=en&source=hp&q=HtmlUnit&btnG=Google+Search&aq=f&aqi=g10&aql=&oq=HtmlUnit&gs_rfai=C1GzO-3WATI7ZMIzmNKmtjdYBAAAAqgQFT9BUmVA&pbx=1&fp=b567883b9d1b1766";
+                    String fullPath = pageSaver.savePageLocally(page, url);
+                    System.out.println("Page with title '" + page.getTitleText() + "' saved to " + fullPath);
+               }
+
+               List<HtmlAnchor> anchors3 =  page.getAnchors();
+               HtmlAnchor link4 = null;
+               for(HtmlAnchor anchor: anchors3)
+               {
+                    if(anchor.asText().indexOf("HtmlUnit") > -1 )
+                    {
+                         link4 = anchor;
+                         break;
+                    }
+               }
+               page = link4.click();
+
+               System.out.println("Current page: HtmlUnit - Welcome to HtmlUnit");
+
+               // Current page:
+               // Title=HtmlUnit - Welcome to HtmlUnit
+               // URL=http://htmlunit.sourceforge.net/
+
+               if( savePagesLocally )
+               {
+                    url = "http://htmlunit.sourceforge.net/";
                     String fullPath = pageSaver.savePageLocally(page, url);
                     System.out.println("Page with title '" + page.getTitleText() + "' saved to " + fullPath);
                }
@@ -102,8 +114,7 @@ public class SourceForgeTest
 
                if( savePagesLocally )
                {
-                    url = "http://sourceforge.net/search/?type_of_search=soft&words=htmlunit";
-                    String fullPath = pageSaver.savePageLocally(page, url);
+                    String fullPath = pageSaver.savePageLocally(page, "error_page.html", url);
                     System.out.println("Page with title '" + page.getTitleText() + "' saved to " + fullPath);
                }
 
@@ -115,8 +126,7 @@ public class SourceForgeTest
 
                if( savePagesLocally )
                {
-                    url = "http://sourceforge.net/search/?type_of_search=soft&words=htmlunit";
-                    String fullPath = pageSaver.savePageLocally(page, url);
+                    String fullPath = pageSaver.savePageLocally(page, "error_page.html", url);
                     System.out.println("Page with title '" + page.getTitleText() + "' saved to " + fullPath);
                }
 
@@ -128,8 +138,7 @@ public class SourceForgeTest
 
                if( savePagesLocally )
                {
-                    url = "http://sourceforge.net/search/?type_of_search=soft&words=htmlunit";
-                    String fullPath = pageSaver.savePageLocally(page, url);
+                    String fullPath = pageSaver.savePageLocally(page, "error_page.html", url);
                     System.out.println("Page with title '" + page.getTitleText() + "' saved to " + fullPath);
                }
 
@@ -141,8 +150,7 @@ public class SourceForgeTest
 
                if( savePagesLocally )
                {
-                    url = "http://sourceforge.net/search/?type_of_search=soft&words=htmlunit";
-                    String fullPath = pageSaver.savePageLocally(page, url);
+                    String fullPath = pageSaver.savePageLocally(page, "error_page.html", url);
                     System.out.println("Page with title '" + page.getTitleText() + "' saved to " + fullPath);
                }
 
