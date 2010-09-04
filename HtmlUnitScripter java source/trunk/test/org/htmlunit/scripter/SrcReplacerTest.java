@@ -102,6 +102,17 @@ public class SrcReplacerTest extends TestCase
 	}
 	
 	/**
+	 * One dot in path
+	 */
+	public void testReplaceSrc7()
+	{
+		String src = "<img src=\"./feature.gif\" />";
+		String modifiedImageTag = HtmlUtilities.srcInsertURL( src, REPLACEMENT );
+		
+		assertEquals( "<img src=\"http://www.myplace.com/app/feature.gif\" />", modifiedImageTag);
+	}
+	
+	/**
 	 * Lower folder
 	 */
 	public void testReplaceHref1()
