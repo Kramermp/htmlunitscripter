@@ -15,7 +15,7 @@
 	<classpathentry kind="lib" path="java/lib/htmlunit-2.7/xalan-2.7.1.jar"/>
 	<classpathentry kind="lib" path="java/lib/htmlunit-2.7/xercesImpl-2.9.1.jar"/>
 	<classpathentry kind="lib" path="java/lib/htmlunit-2.7/xml-apis-1.3.04.jar"/>
-	<classpathentry kind="lib" path="java/lib/htmlunit-scripter-1.0.0.jar"/>
+	<classpathentry kind="lib" path="java/lib/htmlunit-scripter-1.1.0.jar"/>
 	<classpathentry kind="src" path="java/test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="java/bin"/>
