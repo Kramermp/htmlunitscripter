@@ -141,6 +141,12 @@ public class HtmlUtilities
             String secondPart = line.substring(patternIndex, line.length() );       
             String newSecondPart = secondPart;
             
+            // Special case of ./
+            if( newSecondPart.startsWith("./") )
+            {
+            	newSecondPart = newSecondPart.substring( 2 );
+            }
+            
             // Special case; we are dealing with the root URL
             if( newSecondPart.startsWith("/"))
             {
