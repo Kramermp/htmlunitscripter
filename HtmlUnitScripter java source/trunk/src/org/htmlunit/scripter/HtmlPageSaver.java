@@ -204,6 +204,7 @@ public class HtmlPageSaver
           {
                System.err.println( "IOException was thrown: " + e.getMessage() );
                e.printStackTrace();
+               outputFileString = null;
           }
           finally
           {
