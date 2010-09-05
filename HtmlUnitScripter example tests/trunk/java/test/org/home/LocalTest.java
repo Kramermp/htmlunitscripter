@@ -47,7 +47,7 @@ public class LocalTest
           HtmlPage page = null;
           boolean savePagesLocally = false;
           
-          File file = new File("here.html");
+          File file = new File("../../here.html");
           String filePath = null;
           
           if( file.exists() )
