@@ -61,7 +61,7 @@ public class GoogleTest
 
                if(localFilePath == null)
                {
-                    System.err.println( "localFilePath property needs to be specified on command line, like so:" +
+                    System.out.println( "localFilePath property needs to be specified on command line, like so:" +
                          "-DlocalFilePath=somefilepath");
                     throw new MissingPropertyException("localFilePath property was not specified");
                }
@@ -127,7 +127,7 @@ public class GoogleTest
           }
           catch ( FailingHttpStatusCodeException e1 )
           {
-               System.err.println( "FailingHttpStatusCodeException thrown:" + e1.getMessage() );
+               System.out.println( "FailingHttpStatusCodeException thrown:" + e1.getMessage() );
                e1.printStackTrace();
 
                if( savePagesLocally )
@@ -139,7 +139,7 @@ public class GoogleTest
           }
           catch ( MalformedURLException e1 )
           {
-               System.err.println( "MalformedURLException thrown:" + e1.getMessage() );
+               System.out.println( "MalformedURLException thrown:" + e1.getMessage() );
                e1.printStackTrace();
 
                if( savePagesLocally )
@@ -151,7 +151,7 @@ public class GoogleTest
            }
           catch ( IOException e1 )
           {
-               System.err.println( "IOException thrown:" + e1.getMessage() );
+               System.out.println( "IOException thrown:" + e1.getMessage() );
                e1.printStackTrace();
 
                if( savePagesLocally )
@@ -163,7 +163,7 @@ public class GoogleTest
           }
           catch( Exception e )
           {
-               System.err.println( "General exception thrown:" + e.getMessage() );
+               System.out.println( "General exception thrown:" + e.getMessage() );
                e.printStackTrace();
 
                if( savePagesLocally )
