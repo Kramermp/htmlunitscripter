@@ -29,7 +29,7 @@ HtmlUnitScripter can create Java code for the following types of HTML elements:
 
 - Links (known as HtmlAnchors in HtmlUnit)
 
-- Input elements (checkboxes, radio buttons, submit buttons, and select lists/options are specifically supported. For input elements outside of these, HtmlUnitScripter will construct code that will create a generic HtmlInput object that is "clickable").
+- Clickable input elements(such as checkboxes, radio buttons, submit buttons and select lists/options) are supported. For some input elements, HtmlUnitScripter will construct code that will create a generic HtmlInput object that is "clickable").
 
 - Textboxes, textareas and password fields. For these elements, HtmlUnitScripter will capture the text that you typed as the field loses focus. The generated Java code will insert the text into the HtmlUnit object.
 
