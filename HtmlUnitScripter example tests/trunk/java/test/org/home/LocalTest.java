@@ -58,7 +58,7 @@ public class LocalTest
         	  } 
         	  catch (IOException e)
         	  {
-        		  System.err.println( "IOException thrown: " + e.getMessage() );
+        		  System.out.println( "IOException thrown: " + e.getMessage() );
         		  e.printStackTrace();
         		  System.exit(1);
         	  }
@@ -66,7 +66,7 @@ public class LocalTest
           }
           else
           {
-        	  System.err.println( "File could not be read from location " + file.getPath() + "; exiting now" );
+        	  System.out.println( "File could not be read from location " + file.getPath() + "; exiting now" );
         	  System.exit(1);
           }
           
@@ -87,7 +87,7 @@ public class LocalTest
 
                if(localFilePath == null)
                {
-                    System.err.println( "localFilePath property needs to be specified on command line, like so:" +
+                    System.out.println( "localFilePath property needs to be specified on command line, like so:" +
                          "-DlocalFilePath=somefilepath");
                     throw new MissingPropertyException("localFilePath property was not specified");
                }
@@ -113,7 +113,7 @@ public class LocalTest
           }
           catch ( FailingHttpStatusCodeException e1 )
           {
-               System.err.println( "FailingHttpStatusCodeException thrown:" + e1.getMessage() );
+               System.out.println( "FailingHttpStatusCodeException thrown:" + e1.getMessage() );
                e1.printStackTrace();
 
                if( savePagesLocally )
@@ -124,7 +124,7 @@ public class LocalTest
           }
           catch ( MalformedURLException e1 )
           {
-               System.err.println( "MalformedURLException thrown:" + e1.getMessage() );
+               System.out.println( "MalformedURLException thrown:" + e1.getMessage() );
                e1.printStackTrace();
 
                if( savePagesLocally )
@@ -135,7 +135,7 @@ public class LocalTest
            }
           catch ( IOException e1 )
           {
-               System.err.println( "IOException thrown:" + e1.getMessage() );
+               System.out.println( "IOException thrown:" + e1.getMessage() );
                e1.printStackTrace();
 
                if( savePagesLocally )
@@ -146,7 +146,7 @@ public class LocalTest
           }
           catch( Exception e )
           {
-               System.err.println( "General exception thrown:" + e.getMessage() );
+               System.out.println( "General exception thrown:" + e.getMessage() );
                e.printStackTrace();
 
                if( savePagesLocally )
