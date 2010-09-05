@@ -29,9 +29,13 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 
 /**
+ * This test will use the included here.html file located a few folders up in the 
+ * example-tests folder. You can create a script by loading here.html into a Firefox
+ * window and then starting HtmlUnitScripter. Copy the script output into the area below
+ * starting at the comment "***** Add new code starting here *****".
  * You can run this test either thru Eclipse or on the command line. To save html pages, use these
  * JVM runtime arguments:
- * <code>-DsavePagesLocally=true -DlocalFilePath=somefilepath</code>
+ * -DsavePagesLocally=true -DlocalFilePath=somefilepath
  * 
  * @author Matt Gross 8/2010
  *
