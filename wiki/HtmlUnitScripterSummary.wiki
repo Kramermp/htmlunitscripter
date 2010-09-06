@@ -130,7 +130,7 @@ Like links, several ways are provided to retrieve html input elements, textboxes
   - *Use XPath only* retrieves an element only by its XPath. The XPath will always exist, so no other attributes are tried.
 
 = Generating a full Java class =
-HtmlUnitScripter is capable of generating the text for a full Java class, including all import statements and try/catch blocks. Due to the security constraints in Javascript, a .java file cannot actually be saved on the local machine. But the class generation feature provides a way to generate a Java class that you can copy and paste into a .java file that you create yourself.
+HtmlUnitScripter is capable of generating the text for a full Java class, including all import statements and try/catch blocks. Due to the security constraints in Javascript, a .java file cannot actually be saved on the local machine. But the class generation feature provides a way to generate the text for a Java class that you can copy and paste into a .java file that you create yourself.
 
 To generate a Java class, click the "Generate Class" button. A dialog box will pop up.
 Before a class can be generated, you must provide the package path and class name. The package path can be something like "org.mysite.scripts". The class name can be something like "MySiteTest". After you have typed in the package path and class name, click the "Generate Java" button. You will need to create a .java file in the appropriate place on your file system. Then you can copy the generated code in the window to the .java file, and compile and run the class.
@@ -152,3 +152,14 @@ Previous Next Error Page
 The "Java code" line at the top indicates the line of source code that was being executed when the page was saved. This makes it easy to find the source code that generated a certain page. The Previous and Next links navigate to the previous and next pages that were saved during the test. The Error Page link will navigate to the error_page.html page that was saved during the test (if an exception occurred). If no exception occurred, this link points to a non-existent error page.
 
 To capture web pages during a test, the "Generate page logging statements between page loads" extension option must be enabled. Enabling this option will allow Java code to be generated that will save the pages. Two JVM runtime arguments must be also be added when executing the Java class: <code>-DsavePagesLocally=true -DlocalFilePath=yourFilePath</code>
+
+= Example Java classes =
+A full Eclipse workspace is available for download <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here:</a> This workspace was created under Eclipse 3.4 and contains all jars (including HtmlUnit jars) required to run a Java class generated with HtmlUnitScripter. There is an example class included that you can run to demonstrate how a HtmlUnitScripter class is executed. If you do not use Eclipse, then you can run a .bat or .sh file which will also run an example HtmlUnitScripter class from the command line. 
+
+*Eclipse configuration*
+  - Download the eclipse-workspace.zip from the <a href="http://code.google.com/p/htmlunitscripter/downloads/list">downloads</a> page. Extract the zip to a convenient location. Launch Eclipse. Change to a different workspace by navigating to File -> Switch Workspace -> Other. Choose the eclipse-workspace folder that you just extracted. When the workspace opens, you will see the example-tests project on the left. If you expand the example-tests project, you will see a java/test source folder. You will also see some html pages, which can be used to demonstrate how HtmlUnitScripter generates code through FireFox. Open the java-test folder. Inside, there is a org.home.GoogleTest.java class. This is the example class that was previously generated using HtmlUnitScripter.
+  - Within Eclipse, navigate to Run -> Run Configurations. Under the Java Application section, there will be a GoogleTest. Click on the GoogleTest and click the Run button.
+  - During the test, the Eclipse console will display a large number of warnings due to interaction with the Google website. After the test has finished running, look for this text at the bottom of the console:
+<code>Page with title 'HtmlUnit - Welcome to HtmlUnit' saved to ./GoogleTest/output_3.html
+<br>Test has completed successfully</code>
+This text indicates that the test has run successfully.
