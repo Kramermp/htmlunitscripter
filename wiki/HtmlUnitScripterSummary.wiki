@@ -157,9 +157,29 @@ To capture web pages during a test, the "Generate page logging statements betwee
 A full Eclipse workspace is available for download <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here:</a> This workspace was created under Eclipse 3.4 and contains all jars (including HtmlUnit jars) required to run a Java class generated with HtmlUnitScripter. There is an example class included that you can run to demonstrate how a HtmlUnitScripter class is executed. If you do not use Eclipse, then you can run a .bat or .sh file which will also run an example HtmlUnitScripter class from the command line. 
 
 *Eclipse configuration*
-  - Download the eclipse-workspace.zip from the <a href="http://code.google.com/p/htmlunitscripter/downloads/list">downloads</a> page. Extract the zip to a convenient location. Launch Eclipse. Change to a different workspace by navigating to File -> Switch Workspace -> Other. Choose the eclipse-workspace folder that you just extracted. When the workspace opens, you will see the example-tests project on the left. If you expand the example-tests project, you will see a java/test source folder. You will also see some html pages, which can be used to demonstrate how HtmlUnitScripter generates code through FireFox. Open the java-test folder. Inside, there is a org.home.GoogleTest.java class. This is the example class that was previously generated using HtmlUnitScripter.
-  - Within Eclipse, navigate to Run -> Run Configurations. Under the Java Application section, there will be a GoogleTest. Click on the GoogleTest and click the Run button.
-  - During the test, the Eclipse console will display a large number of warnings due to interaction with the Google website. After the test has finished running, look for this text at the bottom of the console:
-<code>Page with title 'HtmlUnit - Welcome to HtmlUnit' saved to ./GoogleTest/output_3.html
-<br>Test has completed successfully</code>
+  1. Download the eclipse-workspace.zip from the <a href="http://code.google.com/p/htmlunitscripter/downloads/list">downloads</a> page. Extract the zip to a convenient location. 
+
+  2. Launch Eclipse. Change to a different workspace by navigating to File -> Switch Workspace -> Other. Choose the eclipse-workspace folder that you just extracted. When the workspace opens, you will see the example-tests project on the left. If you expand the example-tests project, you will see a java/test source folder. You will also see some html pages, which can be used to demonstrate how HtmlUnitScripter generates code through FireFox. Open the java-test folder. Inside, there is a org.home.GoogleTest.java class. This is the example class that was previously generated using HtmlUnitScripter.
+
+  3. Within Eclipse, navigate to Run -> Run Configurations. Under the Java Application section, there will be a GoogleTest. Click on the GoogleTest and click the Run button.
+
+  4. During the test, the Eclipse console will display a large number of warnings due to interaction with the Google website. After the test has finished running, look for this text at the bottom of the console:
+_Page with title 'HtmlUnit - Welcome to HtmlUnit' saved to ./GoogleTest/output_3.html
+<br>Test has completed successfully_
+
 This text indicates that the test has run successfully.
+
+  5. You can view the html pages that were processed by HtmlUnit during the test. Use your file browser to navigate to the eclipse-workspace folder. Navigate to *example-tests/java/test/*. There should be a GoogleTest folder containing three html pages. Open the output_1.html. This page will show the Google home page just before the Google Search button was clicked. Note how the text "HtmlUnit" is filled in the search textbox. This action was performed by HtmlUnit before the next page was loaded. Now click the Next link at the very top. output_2.html will contain all the Google links that were returned by the search. Now click Next at the very top again. output_3.html is the HtmlUnit home page on Sourceforge. For this page, the .css files are in some custom Javascript functions and are not processed by the current version of HtmlUnitScripter. But you do have a clear idea of which pages were processed by the Java code during the test. This functionality makes debugging Java pages generated with HtmlUnitScripter a much easier task.
+
+*Non-Eclipse configuration*
+  1. Follow Step 1 under Eclipse configuration. Use your command console (cmd for Windows, Terminal for UNIX/Linux) to navigate to *eclipse-workspace/example-tests/java/test/*.
+
+  2. You can run either runGoogleTest.bat (for Windows) or runGoogleTest.sh (for UNIX/Linux). GoogleTest.java will be compiled and executed. 
+
+  3. During the test, the console will display a large number of warnings due to interaction with the Google website. After the test has finished running, look for this text at the bottom of the console:
+_Page with title 'HtmlUnit - Welcome to HtmlUnit' saved to ./GoogleTest/output_3.html
+<br>Test has completed successfully_
+
+This text indicates that the test has run successfully.
+
+  4. Html pages will be saved in the same way as for Step 5 of the Eclipse configuration.
