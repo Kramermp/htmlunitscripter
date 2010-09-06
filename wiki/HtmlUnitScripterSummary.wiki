@@ -49,6 +49,8 @@ HtmlUnitScripter can create Java code for the following types of HTML elements:
 HtmlUnitScripter is currently set up to run under any version of Firefox 3. It has been tested with HtmlUnit version 2.7, although it will likely run well with later 2.x versions. Running the generated Java classes requires Java 5 and later. To run the generated classes, you will also need to download htmlunit-scripter.jar, available <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here:</a> This jar has been compiled under Java 5.
 
 = Installing and running HtmlUnitScripter =
+
+*Firefox extension*
 Click on the HtmlUnitScripter.xpi <a href="http://code.google.com/p/htmlunitscripter/downloads/list">download link</a> and use Firefox to open the file. Firefox will ask to confirm the installation. Click on "Install Now". After the extension has been installed, you must restart Firefox. After Firefox has been restarted, you should see a small scripter icon in the lower right corner. Click on the icon to open HtmlUnitScripter.
 
 - The output box is on the bottom and holds a preview of the generated Java code.
@@ -80,6 +82,9 @@ checkbox6a.click();
 </code>
 
 You can then comment out the existing checkbox5 code and replace it with the new code. The new code will not interfere with existing variables in the Java class. Thus, updating a script can become a quick operation.
+
+*Java examples*
+An example HtmlUnitScripter Java class with supporting jars and an Eclipse workspace is provided in a convenient zip file located <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here</a>. More detail about this zip file is located in the Java Example Classes section below. 
 
 = Extension options =
 
