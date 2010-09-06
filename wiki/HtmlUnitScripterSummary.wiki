@@ -164,7 +164,7 @@ A full Eclipse workspace is available for download <a href="http://code.google.c
 *Eclipse configuration*
   1. Download the eclipse-workspace.zip from the <a href="http://code.google.com/p/htmlunitscripter/downloads/list">downloads</a> page. Extract the zip to a convenient location. 
 
-  2. Launch Eclipse. Change to a different workspace by navigating to File -> Switch Workspace -> Other. Choose the eclipse-workspace folder that you just extracted. When the workspace opens, you will see the example-tests project on the left. If you expand the example-tests project, you will see a java/test source folder. You will also see some html pages, which can be used to demonstrate how HtmlUnitScripter generates code through FireFox. Open the java-test folder. Inside, there is a org.home.GoogleTest.java class. This is the example class that was previously generated using HtmlUnitScripter.
+  2. Launch Eclipse. Change to a different workspace by navigating to File -> Switch Workspace -> Other. Choose the eclipse-workspace folder within the extracted zip file. When the workspace opens, you will see the example-tests project on the left. If you expand the example-tests project, you will see a java/test source folder. You will also see some html pages, which can be used to demonstrate how HtmlUnitScripter generates code through FireFox. Open the java-test folder. Inside, there is a org.home.GoogleTest.java class. This is the example class that was previously generated using HtmlUnitScripter.
 
   3. Within Eclipse, navigate to Run -> Run Configurations. Under the Java Application section, there will be a GoogleTest. Click on the GoogleTest and click the Run button.
 
