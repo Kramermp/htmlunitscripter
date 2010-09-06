@@ -162,7 +162,7 @@ To capture web pages during a test, the "Generate page logging statements betwee
 A full Eclipse workspace is available for download <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here:</a> This workspace was created under Eclipse 3.4 and contains all jars (including HtmlUnit jars) required to run a Java class generated with HtmlUnitScripter. There is an example class included that you can run to demonstrate how a HtmlUnitScripter class is executed. If you do not use Eclipse, then you can run a .bat or .sh file which will also run an example HtmlUnitScripter class from the command line. 
 
 *Eclipse configuration*
-  1. Download the eclipse-workspace.zip from the <a href="http://code.google.com/p/htmlunitscripter/downloads/list">downloads</a> page. Extract the zip to a convenient location. 
+  1. Download the scripter-workspace.zip from the <a href="http://code.google.com/p/htmlunitscripter/downloads/list">downloads</a> page. Extract the zip to a convenient location. 
 
   2. Launch Eclipse. Change to a different workspace by navigating to File -> Switch Workspace -> Other. Choose the eclipse-workspace folder within the extracted zip file. When the workspace opens, you will see the example-tests project on the left. If you expand the example-tests project, you will see a java/test source folder. You will also see some html pages, which can be used to demonstrate how HtmlUnitScripter generates code through FireFox. Open the java-test folder. Inside, there is a org.home.GoogleTest.java class. This is the example class that was previously generated using HtmlUnitScripter.
 
