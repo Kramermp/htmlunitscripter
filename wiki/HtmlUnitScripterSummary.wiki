@@ -84,7 +84,7 @@ checkbox6a.click();
 You can then comment out the existing checkbox5 code and replace it with the new code. The new code will not interfere with existing variables in the Java class. Thus, updating a script can become a quick operation.
 
 *Java examples:*
-An example HtmlUnitScripter Java class with supporting jars and an Eclipse workspace is provided in a convenient zip file located <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here</a>. More detail about this zip file is located in the Java Example Classes section below. 
+An example HtmlUnitScripter Java class with supporting jars and an Eclipse workspace is provided in a convenient zip file located <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here</a>. More detail about this zip file is located in the Example Java Classes section below. 
 
 = Extension options =
 
