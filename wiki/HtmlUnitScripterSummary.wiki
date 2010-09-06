@@ -46,7 +46,7 @@ HtmlUnitScripter can create Java code for the following types of HTML elements:
 
 = Requirements =
 
-HtmlUnitScripter is currently set up to run under any version of Firefox 3. It has been tested with HtmlUnit versions 2.5 and 2.7. Running the generated Java classes requires Java 5 and later. To run the generated classes, you will also need to download htmlunit-scripter.jar, available <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here:</a> This jar has been compiled under Java 5.
+HtmlUnitScripter is currently set up to run under any version of Firefox 3. It has been tested with HtmlUnit version 2.7, although it will likely run well with later 2.x versions. Running the generated Java classes requires Java 5 and later. To run the generated classes, you will also need to download htmlunit-scripter.jar, available <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here:</a> This jar has been compiled under Java 5.
 
 = Installing and running HtmlUnitScripter =
 Click on the HtmlUnitScripter.xpi <a href="http://code.google.com/p/htmlunitscripter/downloads/list">download link</a> and use Firefox to open the file. Firefox will ask to confirm the installation. Click on "Install Now". After the extension has been installed, you must restart Firefox. After Firefox has been restarted, you should see a small scripter icon in the lower right corner. Click on the icon to open HtmlUnitScripter.
@@ -85,9 +85,12 @@ You can then comment out the existing checkbox5 code and replace it with the new
 
 HtmlUnitScripter has some user-adjustable options. To see the options within Firefox, navigate to Tools -> Add-ons and click the Options button for HtmlUnitScripter.
 
-*Log to error console:* This option is disabled by default. Turning on this option will allow clicked elements that HtmlUnitScripter cannot identify to be logged to the Firefox error log. To see the Firefox error log, navigate to Tools -> Error Console. HtmlUnitScripter error messages will be in the Messages portion of the log.
+*Firefox Error Console Logging:* This option controls how much information is written to the Firefox error log (available by navigating to Tools -> Error Console within Firefox). Entries from HtmlUnitScripter are placed in the Messages section of the log. The following options are available via a dropdown:
+  - None: No messages will be written to the log from HtmlUnitScripter.
+  - Errors only: Error messages will be written to the log. HtmlUnitScripter logs error messages when an element cannot be uniquely identified on the page. 
+  - Verbose: Every element that is picked up by HtmlUnitScripter is logged. This mode is mainly used for debugging HtmlUnitScripter. Note that many elements, like the html form element, are picked up by HtmlUnitScripter but are not valid clickable items. HtmlUnitScripter will not output code for these items.
 
-*Generate page logging statements between page loads:* This option is enabled by default. Whenever a new page is loaded while HtmlUnitScripter is recording, the page URL and title are generated as Java comments. In addition, if this option is enabled, a System.out.println() statement that prints the URL and title is also generated. This helps to "see" progress when running the Java program with the generated code. This option also prints out Java code that can save the html page as the script is being executed. More information about this feature is provided below.
+*Generate page logging statements between page loads:* This option is enabled by default. Whenever a new page is loaded while HtmlUnitScripter is recording, the page URL and title are generated as Java comments and as System.out.println() statements. This helps to "see" progress when running the Java program with the generated code. This option also prints out Java code that can save the html page to the local filesystem as the script is being executed. More information about this feature is provided below.
 
 *Retrieval of page info: check main frame only for info:* This option is enabled by default. As described above, whenever a new page is loaded while HtmlUnitScripter is recording, the page URL and title is generated as Java comments. Many websites use multiple frames to hold items like ads. For these websites, HtmlUnitScripter would generate URL and title information for every frame that it finds on the page. When this item is enabled, HtmlUnitScripter will filter out all frame information except for the main frame. However, on some websites, you may need to see information for all frames. Disable this option to turn off the filtering.
 
@@ -95,19 +98,20 @@ HtmlUnitScripter has some user-adjustable options. To see the options within Fir
 
   - Retrieve a link using its id or name attribute (id is always used first if available)
 
-  - Retrieve a link using its href attribute
+  - Retrieve a link using its href attribute (the link's destination)
 
   - Retrieve a link using the text that is displayed on the page (the text between `<a>` and `</a>` anchors)
 
   - Retrieve a link which is a clickable image, like so: `<a href="there.html"><img src="button.png"></a>` 
 
-  - Retrieve a link by XPath. XPath is a means by identifying an element by its location within the page html. XPath example: **(//a)[3]** In general, using the XPath is not recommended, since it is an absolute path. If the original html page is modified, then the XPath recorded in the script may become inaccurate and can break the script.
+  - Retrieve a link by XPath. XPath is a type of XML query that can retrieve an element by its location within the page html. XPath example: **(//a)[3]** In general, using the XPath is not recommended, since it is an absolute path. If the original html page is modified, then the XPath recorded in the script may become inaccurate and can break the script.
 
 
+For maximum flexibility, HtmlUnitScripter will use combinations of these methods for each extension option. For example, if the "Use id first" attribute is selected, then HtmlUnitScripter will try to extract the id from a link object. But if the id has not been set on the link, it will try to extract the name attribute, and so on. The following hierarchy is used: 
 
-For maximum flexibility, HtmlUnitScripter will use combinations of these methods for each extension option:
+  - *Use id first* (try using id attribute, then try using name attribute, then try using displayed text, then try using clickable image info, then try using the href attribute)
 
-  - *Use id or name first* (try using id attribute, then try using name attribute, then try using displayed text, then try using a clickable image, then try using the href attribute)
+  - *Use name first* (try using name attribute, then try using id attribute, then try using displayed text, then try using clickable image info, then try using the href attribute)
 
   - *Use link text first* (try using displayed text, then try using id attribute, then try using name attribute, then try using a clickable image, then try using the href attribute)
 
@@ -116,22 +120,14 @@ For maximum flexibility, HtmlUnitScripter will use combinations of these methods
   - *Use link XPath only* retrieves a link only by its XPath. The XPath will always exist, so no other attributes are tried.
 
 
-*Retrieving other elements (except textboxes, textareas and select list options)*
+*Retrieving other elements*
 
-Like links, several ways are provided to retrieve html input elements. Most html input elements have a value attribute, which is often unique on the page. Exceptions to this rule are textboxes, textareas, and select lists (see below). The following options are available for all the other elements: 
-  - *Use id or name* (id is always used first if available)
+Like links, several ways are provided to retrieve html input elements, textboxes and textareas. The following options are available for these elements: 
+  - *Use id first* (try using id attribute, then try using name attribute, then use XPath)
 
-  - *Use element value*
+  - *Use name first* (try using name attribute, then try using id attribute, then use XPath)
 
-  - *Use XPath*
-
-**Retrieving textboxes, textareas and select list options**
-
-For textboxes and textareas, the value attribute holds whatever is typed in the textbox and thus cannot be used to retrieve the element. Select boxes do not have a value either(although the options within the select box do). Thus, textboxes, textareas and select lists cannot be retrieved by value. These elements can be retrieved using the following options:
-  - *Use id or name* (id is always used first if available)
-
-  - *Use XPath*
-
+  - *Use XPath only* retrieves an element only by its XPath. The XPath will always exist, so no other attributes are tried.
 
 = Generating a full Java class =
 HtmlUnitScripter is capable of generating the text for a full Java class, including all import statements and try/catch blocks. Due to the security constraints in Javascript, a .java file cannot actually be saved on the local machine. But the class generation feature provides a way to generate a Java class that you can copy and paste into a .java file that you create yourself.
