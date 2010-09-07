@@ -33,6 +33,9 @@ HtmlUnitScripter can create Java code for the following types of HTML elements:
 
 - Textboxes, textareas and password fields. For these elements, HtmlUnitScripter will capture the text that you typed as the field loses focus. The generated Java code will insert the text into the HtmlUnit object.
 
+- After you have completed scripting in Firefox, you can generate the contents of a Java class with one click.
+
+- Code generated from HtmlUnitScripter has the ability to save html pages to the local file system during a test. This feature allows you to "see" how HtmlUnit was interacting with each page while the test was executing. The source code line number that was executed when the page was accessed is also shown at the top of the saved page. This feature makes debugging a test far easier. See the "Running generated Java code" section for more details.
 
 = Limitations =
 
