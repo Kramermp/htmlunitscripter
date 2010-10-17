@@ -417,12 +417,11 @@ function linkUseText(target)
 {
 	var targetAsString = target.toString();
 	var textbox = document.getElementById("htmlunitScripterTextbox");
-	var url = urlBar.value;		
 
 	var nextNum = getNextNum();					
 	var nextNextNum = getNextNum();					
 		
-	var theCode = addSavePagesStatement(url);	
+	var theCode = addSavePagesStatement();	
 	theCode += tabs + "List<HtmlAnchor> anchors" + nextNum + " =  page.getAnchors();\n"
 	theCode += tabs + "HtmlAnchor link" + nextNextNum + " = null;\n"
 	theCode += tabs + "for(HtmlAnchor anchor: anchors" + nextNum + ")\n";
@@ -441,11 +440,9 @@ function linkUseId(target)
 {
 	var targetAsString = target.toString();
 	var textbox = document.getElementById("htmlunitScripterTextbox");
-	var url = urlBar.value;	
-
 	var nextNum = getNextNum();
 
-	var theCode = addSavePagesStatement(url);	
+	var theCode = addSavePagesStatement();	
 	theCode += tabs + "HtmlAnchor anchor" + nextNum + " = (HtmlAnchor) page.getElementById(\"" + target.id + "\");\n";
 	theCode += tabs + "page = anchor" + nextNum + ".click();\n";
 	anchorBuffer = theCode + "\n";
@@ -455,11 +452,10 @@ function linkUseName(target)
 {
 	var targetAsString = target.toString();
 	var textbox = document.getElementById("htmlunitScripterTextbox");
-	var url = urlBar.value;	
 
 	var nextNum = getNextNum();
 
-	var theCode = addSavePagesStatement(url);
+	var theCode = addSavePagesStatement();
 	theCode += tabs + "HtmlAnchor anchor" + nextNum + " = (HtmlAnchor) page.getElementByName(\"" + target.name + "\");\n";
 	theCode += tabs + "page = anchor" + nextNum + ".click();\n";
 	anchorBuffer = theCode + "\n";
@@ -469,7 +465,6 @@ function linkUseParent(target, linkIsInParent, childNode)
 {
 	var targetAsString = target.toString();
 	var textbox = document.getElementById("htmlunitScripterTextbox");
-	var url = urlBar.value;		
 
 	// Useful for when the clicked element (the child here) is an image, the parent href (the target here) is the actual link,
 	// and the parent has neither an id nor a name to identify it.
@@ -479,7 +474,7 @@ function linkUseParent(target, linkIsInParent, childNode)
 		var iterableNum = getNextNum();
 		var iteratorNum = getNextNum();
 
-		var theCode = addSavePagesStatement(url);
+		var theCode = addSavePagesStatement();
 		theCode += tabs + "HtmlElement element" + nextNum + " = null;\n";
 		theCode += tabs + "Iterable<HtmlElement> iterable" + iterableNum + " = page.getAllHtmlChildElements();\n";
 		theCode += tabs + "Iterator<HtmlElement> i" + iteratorNum + " = iterable" + iterableNum + ".iterator();\n";
@@ -505,13 +500,12 @@ function linkUseParent(target, linkIsInParent, childNode)
 function linkUseHref(target)
 {
 	var targetAsString = target.toString();
-	var url = urlBar.value;	
 
 	var nextNum = getNextNum();
 	var listNum = getNextNum();
 	var stringAnchorToFindNum = getNextNum();
 
-	var theCode = addSavePagesStatement(url);
+	var theCode = addSavePagesStatement();
 	theCode += tabs + "HtmlAnchor theAnchor" + nextNum + " = null;\n";
 	theCode += tabs + "List<HtmlAnchor> anchors" + listNum + " = page.getAnchors();\n";
 	theCode += tabs + "String anchorToFind" + stringAnchorToFindNum + " = URLDecoder.decode(\"" + target.href + "\",\"utf-8\");\n";
@@ -539,14 +533,12 @@ function linkUseHref(target)
 
 function linkUseXPath(target)
 {
-	var url = urlBar.value;	
-
 	var listNum = getNextNum();
 	var elementNum = getNextNum();
 
 	var xPath = makeXPath(target,false);
 
-	var theCode = addSavePagesStatement(url);
+	var theCode = addSavePagesStatement();
 	theCode += tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\n";
 	theCode += tabs + "     \"" + xPath + "\");\n";
         theCode += tabs + "HtmlElement element" + elementNum + " = elements" + listNum + ".get(0);\n";
@@ -821,7 +813,6 @@ function selectOptionByXPath(target)
 function onHtmlElement(target)
 {
 	var prefString = prefManager.getCharPref("extensions.htmlunitscripter.elementPreference");
-	var url = urlBar.value;	
 
 	var foundTextFieldType = false;
 	var foundElementToIgnore = false;
@@ -854,58 +845,58 @@ function onHtmlElement(target)
 		if(prefString == "element-useId")
 		{
 			if(target.id)			
-				htmlElementById(target,url);
+				htmlElementById(target);
 			else if(target.name)
-				htmlElementByName(target,url);
+				htmlElementByName(target);
 			else
 			{				
 				logMessage("Error: Id and name attributes unavailable for html element  '" + target.toString() +"' Defaulting to XPath", LOGGING_ERROR);
-				htmlElementByXPath(target,url);
+				htmlElementByXPath(target);
 			}
 		}
 		else if(prefString == "element-useName")
 		{
 			if(target.name)			
-				htmlElementByName(target,url);
+				htmlElementByName(target);
 			else if(target.id)
-				htmlElementById(target,url);
+				htmlElementById(target);
 			else
 			{				
 				logMessage("Error: Id and name attributes unavailable for html element '" + target.toString() +"' Defaulting to XPath", LOGGING_ERROR);
-				htmlElementByXPath(target,url);
+				htmlElementByXPath(target);
 			}
 		}
 		else
 		{
-			htmlElementByXPath(target,url);
+			htmlElementByXPath(target);
 		}
 	}
 	
 } // End onHtmlElement
 
-function htmlElementById(target, url)
+function htmlElementById(target)
 {
 	var nextNum = getNextNum();
 
-	var theCode = addSavePagesStatement(url);
+	var theCode = addSavePagesStatement();
 	theCode += tabs + "HtmlElement theElement" + nextNum + " = (HtmlElement) page.getElementById(\"" + target.id + "\");";
 	theCode += tabs + "\n";
 	theCode += tabs + "page = theElement" + nextNum + ".click();\n";
 	anchorBuffer = anchorBuffer + theCode + "\n";
 }
 
-function htmlElementByName(target,url)
+function htmlElementByName(target)
 {
 	var nextNum = getNextNum();
 
-	var theCode = addSavePagesStatement(url);		
+	var theCode = addSavePagesStatement();		
 	theCode += tabs + "HtmlElement theElement" + nextNum + " = (HtmlElement) page.getElementByName(\"" + target.name + "\");";
 	theCode += tabs + "\n";
 	theCode += tabs + "page = theElement" + nextNum + ".click();\n";
 	anchorBuffer = anchorBuffer + theCode + "\n";
 }
 
-function htmlElementByXPath(target,url)
+function htmlElementByXPath(target)
 {
 	var listNum = getNextNum();
 	var elementNum = getNextNum();
@@ -924,7 +915,7 @@ function htmlElementByXPath(target,url)
 	}
 	
 
-	var theCode = addSavePagesStatement(url);
+	var theCode = addSavePagesStatement();
 	theCode += tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\n";
 	theCode += tabs + "     \"" + xPath + "\");\n";
     	theCode += tabs + "HtmlElement element" + elementNum + " = elements" + listNum + ".get(0);\n";
@@ -1207,7 +1198,7 @@ function addProgressStatement(additionalText)
 	}
 }
 
-function addSavePagesStatement(url)
+function addSavePagesStatement()
 {
 	var addStatement = prefManager.getBoolPref("extensions.htmlunitscripter.printProgress");
 
@@ -1216,8 +1207,8 @@ function addSavePagesStatement(url)
 	{
 		theCode = tabs + "if( savePagesLocally )\n";
 		theCode += tabs + "{\n";
-		theCode += tabs + "     url = \"" + url + "\";\n";  
-		theCode += tabs + "     String fullPath = pageSaver.savePageLocally(page, url);\n";
+		theCode += tabs + "     String fullPath = savePageLocally(page, localFilePath, pageNum);\n";
+		theCode += tabs + "     pageNum++;\n";
 		theCode += tabs + "     System.out.println(\"Page with title '\" + page.getTitleText() + \"' saved to \" + fullPath);\n";
 		theCode += tabs + "}\n";
 		theCode += "\n";

@@ -49,11 +49,16 @@ var generateJava = function () {
 				theCode += packageText + ";\n";
 				theCode += nl;
 
+				theCode += "import java.io.BufferedWriter;\n";
+				theCode += "import java.io.File;\n";
+				theCode += "import java.io.FileWriter;\n";
 				theCode += "import java.io.IOException;\n";
 				theCode += "import java.net.MalformedURLException;\n";
 				theCode += "import java.net.URLDecoder;\n";
 				theCode += "import java.util.Iterator;\n";
 				theCode += "import java.util.List;\n";
+				theCode += "import java.util.Date;\n";
+				theCode += "import java.text.SimpleDateFormat;\n";
 				theCode += nl;
 				theCode += "import org.htmlunit.scripter.HtmlPageSaver;\n";
 				theCode += "import org.htmlunit.scripter.MissingPropertyException;\n";
@@ -89,19 +94,43 @@ var generateJava = function () {
 				theCode += "          if(savePagesLocallyString != null )\n";
 				theCode += "          { savePagesLocally = Boolean.valueOf(savePagesLocallyString); }\n";
 				theCode += nl;
-				theCode += "          HtmlPageSaver pageSaver = null;\n";
+				theCode += "          int pageNum = 1;\n";
+          		theCode += "          String localFilePath = null;\n";
+				theCode += nl;
 				theCode += "          if(savePagesLocally)\n";
 				theCode += "          {\n";
-		     	theCode += "               String localFilePath = System.getProperty(\"localFilePath\");\n";
+		     	theCode += "               localFilePath = System.getProperty(\"localFilePath\");\n";
 				theCode += nl;
 		     	theCode += "               if(localFilePath == null)\n";
 		     	theCode += "               {\n";
 		        theCode += "                    System.out.println( \"localFilePath property needs to be specified on command line, like so:\" +\n";
 		        theCode += "                         \"-DlocalFilePath=somefilepath\");\n";
-		        theCode += "                    throw new MissingPropertyException(\"localFilePath property was not specified\");\n";
+		        theCode += "                    throw new RuntimeException(\"localFilePath property was not specified\");\n";
 		        theCode += "               }\n";
-		        theCode += "               else\n";
-		        theCode += "               { pageSaver = new HtmlPageSaver(localFilePath); }\n";
+				theCode += "               else\n";
+               	theCode += "               {\n";
+            	theCode += "                    String osName = System.getProperty(\"os.name\");\n";
+				theCode += "                    String separator = null;\n";
+				theCode += nl;
+                theCode += "                    if(osName.indexOf(WINDOWS_OS) > -1)\n";
+         		theCode += "                    { separator = \"\\\\\"; }\n";
+         		theCode += "                    else // UNIX-style path\n";
+         		theCode += "                    { separator = \"/\"; }\n";
+				theCode += nl;
+				theCode += "                    if( !localFilePath.endsWith(separator) )\n";
+                theCode += "                    { localFilePath += separator; }\n";
+				theCode += nl;
+				theCode += "                    // Create a new folder for local files- folder name is current date and time\n";
+                theCode += "                    SimpleDateFormat sd = new SimpleDateFormat(\"MM-dd-yyyy_HH_mm\");\n";
+                theCode += "                    String formattedDate = sd.format(new Date());\n";
+                theCode += "                    localFilePath += formattedDate + separator;\n";
+                theCode += "                    File newLocalFolder = new File(localFilePath);\n";
+                theCode += "                    boolean success = newLocalFolder.mkdir();\n";
+                theCode += nl;    
+                theCode += "                    if(!success)\n";
+                theCode += "                    { throw new RuntimeException(\"Could not create new folder at location \" + localFilePath); }\n";
+				theCode += nl;
+                theCode += "                }\n";
 				theCode += "          }\n";
         		theCode += nl;
 				theCode += "          try\n";
@@ -112,7 +141,7 @@ var generateJava = function () {
 				// Add code from the main scripter window
 				theCode += scripterCode;
 
-				theCode += addSavePagesStatement(endUrl,"               ");
+				theCode += addSavePagesStatement("               ");
 				theCode += nl;
 				theCode += "               System.out.println(\"Test has completed successfully\");\n";
 				theCode += "          }\n";
@@ -121,44 +150,121 @@ var generateJava = function () {
 		     	theCode += "               System.out.println( \"FailingHttpStatusCodeException thrown:\" + e1.getMessage() );\n";
 		     	theCode += "               e1.printStackTrace();\n";
 				theCode += nl;
-				theCode += addErrorPageStatement(endUrl,"               ");	
+				theCode += addErrorPageStatement("               ");	
 				theCode += "          }\n";
 				theCode += "          catch ( MalformedURLException e1 )\n";
 				theCode += "          {\n";
 		     	theCode += "               System.out.println( \"MalformedURLException thrown:\" + e1.getMessage() );\n";
 		     	theCode += "               e1.printStackTrace();\n";
 				theCode += nl;	
-               	theCode += addErrorPageStatement(endUrl,"               ");
-				theCode += "           }\n";
+               	theCode += addErrorPageStatement("               ");
+				theCode += "          }\n";
 				theCode += "          catch ( IOException e1 )\n";
 				theCode += "          {\n";
 		        theCode += "               System.out.println( \"IOException thrown:\" + e1.getMessage() );\n";
 		        theCode += "               e1.printStackTrace();\n";
 				theCode += nl;	
-               	theCode += addErrorPageStatement(endUrl,"               ");
+               	theCode += addErrorPageStatement("               ");
 				theCode += "          }\n";
 				theCode += "          catch( Exception e )\n";
           		theCode += "          {\n";
                	theCode += "               System.out.println( \"General exception thrown:\" + e.getMessage() );\n";
                	theCode += "               e.printStackTrace();\n";
                	theCode += nl;	
-               	theCode += addErrorPageStatement(endUrl,"               ");
+               	theCode += addErrorPageStatement("               ");
           		theCode += "          }\n";
 				theCode += "     }\n";
+				theCode += nl;
+     			theCode += "     public static final String WINDOWS_OS = \"Windows\";\n";
+     			theCode += "     public static final String ERROR_PAGE = \"error_page\";\n";
+				theCode += "     public static final String STANDARD_PAGE = \"output\";\n";
+				theCode += nl;
+     			theCode += "     protected static String savePageLocally(HtmlPage page, String filePath, int pageNum)\n";
+     			theCode += "     {\n";
+    	 		theCode += "          return savePageLocally(page, filePath, false, pageNum);\n";
+     			theCode += "     }\n";
+				theCode += nl;
+				theCode += "     protected static String savePageLocally(HtmlPage page, String filePath, boolean isErrorPage, int pageNum)\n";
+     			theCode += "     {\n";
+    	 		theCode += "          String fullFilePath = null;\n";
+    	 		theCode += "          if( isErrorPage )\n";
+    	 		theCode += "          { fullFilePath = filePath + ERROR_PAGE + \".html\"; }\n";
+    	 		theCode += "          else\n";
+    	 		theCode += "          { fullFilePath = filePath + STANDARD_PAGE + \"_\" + pageNum + \".html\"; }\n";
+				theCode += nl;
+    	 		theCode += "          File saveFolder = new File(fullFilePath);\n";
+				theCode += nl;
+    	 		theCode += "          // Overwrite the standard HtmlUnit .html page to add diagnostic info at the top\n";
+         		theCode += "          File webPage = new File(fullFilePath);\n";
+         		theCode += "          BufferedWriter writer = null;\n";
+         		theCode += "          try\n";
+         		theCode += "          {\n";
+        	 	theCode += "               // Delete the standard HtmlUnit .html page\n";
+        	 	theCode += "               if(webPage.exists())\n";
+        	 	theCode += "               { webPage.delete(); }\n";
+        	 	theCode += nl;
+        	 	theCode += "               // Save all the images and css files using the HtmlUnit API\n";
+        	 	theCode += "               page.save(saveFolder);\n";
+        	 	theCode += nl;
+        	 	theCode += "               writer = new BufferedWriter( new FileWriter( webPage ) );\n";
+      	   		theCode += nl;
+      	   	 	theCode += "               // Diagnostic info\n";
+      	   	 	theCode += "               Throwable t = new Throwable();\n";
+             	theCode += "               StackTraceElement[] trace= t.getStackTrace();\n";
+            	theCode += nl;
+             	theCode += "               // Get the line of code that called this method\n";
+             	theCode += "               StackTraceElement callingElement = trace[trace.length-1];\n";
+             	theCode += "               writer.write( \"Java code: \" + callingElement.toString() + \"&nbsp;\");\n";
+             	theCode += nl;
+             	theCode += "               if( isErrorPage )\n";
+             	theCode += "               { writer.write( \"<a href=\" + STANDARD_PAGE + \"_\" + (pageNum-1) + \".html>Previous</a>\" ); }\n";
+             	theCode += "               else\n";
+             	theCode += "               {\n";
+            	theCode += "                    if( pageNum > 1)\n";
+                theCode += "                    { writer.write( \"<a href=\" + STANDARD_PAGE + \"_\" + (pageNum-1) + \".html>Previous</a>\" ); }\n";
+            	theCode += nl; 
+            	theCode += "                    writer.write( \"&nbsp;<a href=\" + STANDARD_PAGE + \"_\" + (pageNum+1) + \".html>Next</a>\" );\n";                 
+                theCode += "                    writer.write( \"&nbsp;<a href=\" + ERROR_PAGE + \".html>Error page</a><br>\");\n";
+             	theCode += "               }\n";
+      	   		theCode += nl;
+      	     	theCode += "               // Main body of page as seen by HTMLUnit\n";
+      	     	theCode += "               writer.write( page.asXml() );\n";
+                theCode += "          }\n";
+        		theCode += "          catch ( IOException e )\n";
+        		theCode += "          {\n";
+             	theCode += "               System.out.println( \"IOException was thrown: \" + e.getMessage() );\n";
+             	theCode += "               e.printStackTrace();\n";
+        		theCode += "          }\n";
+        		theCode += "          finally\n";
+        		theCode += "          {\n";
+        		theCode += "               if( writer != null )\n";
+            	theCode += "               {\n";
+        		theCode += "                    try\n";
+                theCode += "                    {\n";
+        		theCode += "                         writer.flush();\n";
+                theCode += "                         writer.close();\n";
+                theCode += "                    }\n";
+                theCode += "                    catch ( IOException e )\n";
+                theCode += "                    { }\n";
+            	theCode += "               }\n";
+        		theCode += "          }\n";
+        		theCode += nl;
+        		theCode += "          return fullFilePath;\n";
+    			theCode += "     }\n";
 				theCode += "}\n";
 
-				classCodeTextbox.value = theCode
+				classCodeTextbox.value = theCode;
 
 				var packageAsFolders = packageText.replace(/\./g,"/");
 				messagesLabel.value = "Messages: Create a <java source>/" + packageAsFolders +
-							"/" + classNameText + ".java and copy and paste the code below into that file.";
+							"/" + classNameText + ".java file and copy and paste the code below into that file.";
 			}
 		}
 	};
 }();
 window.addEventListener("load", generateJava.onLoad, false);
 
-function addSavePagesStatement(url,whitespace)
+function addSavePagesStatement(whitespace)
 {
 	var addStatement = prefManager.getBoolPref("extensions.htmlunitscripter.printProgress");
 
@@ -167,8 +273,8 @@ function addSavePagesStatement(url,whitespace)
 	{
 		theCode = whitespace  + "if( savePagesLocally )\n";
 		theCode += whitespace + "{\n";
-		theCode += whitespace + "     url = \"" + url + "\";\n";  
-		theCode += whitespace + "     String fullPath = pageSaver.savePageLocally(page, url);\n";
+		theCode += whitespace + "     String fullPath = savePageLocally(page, localFilePath, pageNum);\n";
+        theCode += whitespace + "     pageNum++;\n";
 		theCode += whitespace + "     System.out.println(\"Page with title '\" + page.getTitleText() + \"' saved to \" + fullPath);\n";
 		theCode += whitespace + "}\n";
 		theCode += "\n";
@@ -177,7 +283,7 @@ function addSavePagesStatement(url,whitespace)
 	return theCode;
 }
 
-function addErrorPageStatement(url,whitespace)
+function addErrorPageStatement(whitespace)
 {
 	var addStatement = prefManager.getBoolPref("extensions.htmlunitscripter.printProgress");
 
@@ -186,8 +292,8 @@ function addErrorPageStatement(url,whitespace)
 	{
 		theCode = whitespace  + "if( savePagesLocally )\n";
 		theCode += whitespace + "{\n";
-		theCode += whitespace + "     String fullPath = pageSaver.savePageLocally(page, \"error_page.html\", url);\n";
-		theCode += whitespace + "     System.out.println(\"Page with title '\" + page.getTitleText() + \"' saved to \" + fullPath);\n";
+		theCode += whitespace + "     String fullPath = savePageLocally(page, localFilePath, true, pageNum);\n";
+		theCode += whitespace + "     System.out.println(ERROR_PAGE + \" saved to \" + fullPath);\n";
 		theCode += whitespace + "}\n";
 		theCode += "\n";
 	}
