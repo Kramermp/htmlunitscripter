@@ -49,7 +49,7 @@ Code generated from HtmlUnitScripter has the ability to save html pages to the l
 
 = Requirements =
 
-HtmlUnitScripter is currently set up to run under any version of Firefox 3. It has been tested with HtmlUnit version 2.7, although it will likely run well with later 2.x versions. Running the generated Java classes requires Java 5 and later. To run the generated classes, you will also need to download htmlunit-scripter.jar, available <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here:</a> This jar has been compiled under Java 5.
+HtmlUnitScripter is currently set up to run under any version of Firefox 3. It has been tested with HtmlUnit version 2.7, although it will likely run well with later 2.x versions. Running the generated Java classes requires Java 5 and later. 
 
 = Installing and running HtmlUnitScripter =
 
@@ -85,9 +85,6 @@ checkbox6a.click();
 </code>
 
 You can then comment out the existing checkbox5 code and replace it with the new code. The new code will not interfere with existing variables in the Java class. Thus, updating a script can become a quick operation.
-
-*Java examples:*
-An example HtmlUnitScripter Java class with supporting jars and an Eclipse workspace is provided in a convenient zip file located <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here</a>. More detail about this zip file is located in the Example Java Classes section below. 
 
 = Extension options =
 
@@ -146,48 +143,15 @@ Before a class can be generated, you must provide the package path and class nam
 
 = Running generated Java code =
 
-Running the generated Java class is the same as running any Java class that uses HtmlUnit, except that you will need to include one more jar in the classpath. You will need the htmlunit-scripter.jar, available for download <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here:</a> 
-
-Code generated using HtmlUnitScripter has the ability to capture web pages as HtmlUnit sees them. This is done using the included htmlunit-scripter.jar file. By specifying certain extension and JRE runtime options (shown below), running a script will save each web page that is accessed during a test. Pages are saved with the name "output_X.html", where X is the chronological number of when the page was saved. If an exception occurs that forced the script to abort early, another page is saved named "error_page.html". This page holds the last page that was accessed by the script before the exception occurred. 
-
-Technically, only the html of each web page is saved. Elements like images, css files, etc., are not saved. But the htmlunit-scripter.jar file contains methods that are able to substitute relative urls in src attributes with absolute urls that resolve to the elements on the website. When the saved web pages are viewed locally, the absolute src elements are resolved and the page appears similar to how it looks on the actual website. In addition, some information and several links are added to the top of the page:
+Running the generated Java class is the same as running any Java class that uses HtmlUnit.
+Code generated using HtmlUnitScripter has the ability to capture web pages as HtmlUnit sees them. This is done using the built-in HtmlUnit API to save pages to the local file system. By specifying certain extension and JRE runtime options (shown below), running a script will save each web page that is accessed during a test. Pages are saved with the name "output_X.html", where X is the chronological number of when the page was saved. If an exception occurs that forced the script to abort early, another page is saved named "error_page.html". This page holds the last page that was accessed by the script before the exception occurred. Elements like images, css files, etc., are saved for each page in a separate "output_X" folder ("error_page" folder for the error page). When the saved web pages are viewed locally, the page appears similar to how it looks on the actual website. In addition, some information and several links are added to the top of the page:
 
 <code>
-Java code: org.home.AutoTest.main(AutoTest.java:90)
-Previous Next Error Page
+Java code: org.home.AutoTest.main(AutoTest.java:90) Previous Next Error Page
 </code>
 
 The "Java code" line at the top indicates the line of source code that was being executed when the page was saved. This makes it easy to find the source code that generated a certain page. The Previous and Next links navigate to the previous and next pages that were saved during the test. The Error Page link will navigate to the error_page.html page that was saved during the test (if an exception occurred). If no exception occurred, this link points to a non-existent error page.
 
 To capture web pages during a test, the "Generate page logging statements between page loads" extension option must be enabled. Enabling this option will allow Java code to be generated that will save the pages. Two JVM runtime arguments must be also be added when executing the Java class: <code>-DsavePagesLocally=true -DlocalFilePath=yourFilePath</code>
 
-= Example Java classes =
-A full Eclipse workspace is available for download <a href="http://code.google.com/p/htmlunitscripter/downloads/list">here:</a> This workspace was created under Eclipse 3.4 and contains all jars (including HtmlUnit jars) required to run a Java class generated with HtmlUnitScripter. There is an example class included that you can run to demonstrate how a HtmlUnitScripter class is executed. If you do not use Eclipse, then you can run a .bat or .sh file which will also run an example HtmlUnitScripter class from the command line. 
-
-*Eclipse configuration*
-  1. Download the scripter-workspace.zip from the <a href="http://code.google.com/p/htmlunitscripter/downloads/list">downloads</a> page. Extract the zip to a convenient location. 
-
-  2. Launch Eclipse. Change to a different workspace by navigating to File -> Switch Workspace -> Other. Choose the eclipse-workspace folder within the extracted zip file. When the workspace opens, you will see the example-tests project on the left. If you expand the example-tests project, you will see a java/test source folder. You will also see some html pages, which can be used to demonstrate how HtmlUnitScripter generates code through FireFox. Open the java-test folder. Inside, there is a org.home.GoogleTest.java class. This is the example class that was previously generated using HtmlUnitScripter.
-
-  3. Within Eclipse, navigate to Run -> Run Configurations. Under the Java Application section, there will be a GoogleTest. Click on the GoogleTest and click the Run button.
-
-  4. During the test, the Eclipse console will display a large number of warnings due to interaction with the Google website. After the test has finished running, look for this text at the bottom of the console:
-_Page with title 'HtmlUnit - Welcome to HtmlUnit' saved to ./GoogleTest/output_3.html
-<br>Test has completed successfully_
-
-This text indicates that the test has run successfully.
-
-  5. You can view the html pages that were processed by HtmlUnit during the test. Use your file browser to navigate to the eclipse-workspace folder. Navigate to *example-tests/java/test/*. There should be a GoogleTest folder containing three html pages. Open the output_1.html. This page will show the Google home page just before the Google Search button was clicked. Note how the text "HtmlUnit" is filled in the search textbox. This action was performed by HtmlUnit before the next page was loaded. Now click the Next link at the very top. output_2.html will contain all the Google links that were returned by the search. Now click Next at the very top again. output_3.html is the HtmlUnit home page on Sourceforge. For this page, the .css files are in some custom Javascript functions and are not processed by the current version of HtmlUnitScripter. But you do have a clear idea of which pages were processed by the Java code during the test. This functionality makes debugging Java pages generated with HtmlUnitScripter a much easier task.
-
-*Non-Eclipse configuration*
-  1. Follow Step 1 under Eclipse configuration. Use your command console (cmd for Windows, Terminal for UNIX/Linux) to navigate to *eclipse-workspace/example-tests/java/test/*.
-
-  2. You can run either runGoogleTest.bat (for Windows) or runGoogleTest.sh (for UNIX/Linux). GoogleTest.java will be compiled and executed. 
-
-  3. During the test, the console will display a large number of warnings due to interaction with the Google website. After the test has finished running, look for this text at the bottom of the console:
-_Page with title 'HtmlUnit - Welcome to HtmlUnit' saved to ./GoogleTest/output_3.html
-<br>Test has completed successfully_
-
-This text indicates that the test has run successfully.
-
-  4. Html pages will be saved in the same way as for Step 5 of the Eclipse configuration.
+When a test is executed, the Java class will take the provided localFilePath and create a folder inside with the current date and time as the folder name. Saved web pages and their associated folders will then be located under this folder. Each time you run the test, a new folder with the current date and time will be created. To stop folders from being created during a test, simply set -DsavePagesLocally=false.
