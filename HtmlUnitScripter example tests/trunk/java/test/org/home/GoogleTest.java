@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-import org.htmlunit.scripter.HtmlPageSaver;
-import org.htmlunit.scripter.MissingPropertyException;
-
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
