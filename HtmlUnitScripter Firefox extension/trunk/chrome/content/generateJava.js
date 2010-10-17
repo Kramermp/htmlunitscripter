@@ -185,14 +185,14 @@ var generateJava = function () {
      			theCode += "     {\n";
     	 		theCode += "          String fullFilePath = null;\n";
     	 		theCode += "          if( isErrorPage )\n";
-    	 		theCode += "          { fullFilePath = filePath + ERROR_PAGE + \".html\"; }\n";
+    	 		theCode += "          { fullFilePath = filePath + ERROR_PAGE; }\n";
     	 		theCode += "          else\n";
-    	 		theCode += "          { fullFilePath = filePath + STANDARD_PAGE + \"_\" + pageNum + \".html\"; }\n";
+    	 		theCode += "          { fullFilePath = filePath + STANDARD_PAGE + \"_\" + pageNum; }\n";
 				theCode += nl;
     	 		theCode += "          File saveFolder = new File(fullFilePath);\n";
 				theCode += nl;
     	 		theCode += "          // Overwrite the standard HtmlUnit .html page to add diagnostic info at the top\n";
-         		theCode += "          File webPage = new File(fullFilePath);\n";
+         		theCode += "          File webPage = new File(fullFilePath + \".html\");\n";
          		theCode += "          BufferedWriter writer = null;\n";
          		theCode += "          try\n";
          		theCode += "          {\n";
@@ -246,7 +246,7 @@ var generateJava = function () {
             	theCode += "               }\n";
         		theCode += "          }\n";
         		theCode += nl;
-        		theCode += "          return fullFilePath;\n";
+        		theCode += "          return fullFilePath + \".html\";\n";
     			theCode += "     }\n";
 				theCode += "}\n";
 
