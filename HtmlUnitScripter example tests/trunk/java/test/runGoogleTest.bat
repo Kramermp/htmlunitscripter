@@ -1,4 +1,4 @@
 javac -classpath ../lib\htmlunit-2.7/htmlunit-2.7.jar;../lib\htmlunit-2.7/nekohtml-1.9.14.jar org/home/GoogleTest.java
 echo Sucessfully compiled GoogleTest.java
-mkdir GoogleTest
+mkdir GoogleTestPages
 java -DsavePagesLocally=true -DlocalFilePath=./GoogleTestPages -classpath .;../lib\htmlunit-2.7/commons-codec-1.4.jar;../lib\htmlunit-2.7/commons-collections-3.2.1.jar;../lib\htmlunit-2.7/commons-httpclient-3.1.jar;../lib\htmlunit-2.7/commons-io-1.4.jar;../lib\htmlunit-2.7/commons-lang-2.4.jar;../lib\htmlunit-2.7/commons-logging-1.1.1.jar;../lib\htmlunit-2.7/cssparser-0.9.5.jar;../lib\htmlunit-2.7/htmlunit-2.7.jar;../lib\htmlunit-2.7/htmlunit-core-js-2.7.jar;../lib\htmlunit-2.7/nekohtml-1.9.14.jar;../lib\htmlunit-2.7/sac-1.3.jar;../lib\htmlunit-2.7/serializer-2.7.1.jar;../lib\htmlunit-2.7/xalan-2.7.1.jar;../lib\htmlunit-2.7/xercesImpl-2.9.1.jar;../lib\htmlunit-2.7/xml-apis-1.3.04.jar org.home.GoogleTest
