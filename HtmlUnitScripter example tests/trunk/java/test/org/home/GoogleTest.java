@@ -218,14 +218,14 @@ public class GoogleTest
      {
           String fullFilePath = null;
           if( isErrorPage )
-          { fullFilePath = filePath + ERROR_PAGE + ".html"; }
+          { fullFilePath = filePath + ERROR_PAGE; }
           else
-          { fullFilePath = filePath + STANDARD_PAGE + "_" + pageNum + ".html"; }
+          { fullFilePath = filePath + STANDARD_PAGE + "_" + pageNum; }
 
           File saveFolder = new File(fullFilePath);
 
           // Overwrite the standard HtmlUnit .html page to add diagnostic info at the top
-          File webPage = new File(fullFilePath);
+          File webPage = new File(fullFilePath + ".html");
           BufferedWriter writer = null;
           try
           {
@@ -279,6 +279,6 @@ public class GoogleTest
                }
           }
 
-          return fullFilePath;
+          return fullFilePath + ".html";
      }
 }
