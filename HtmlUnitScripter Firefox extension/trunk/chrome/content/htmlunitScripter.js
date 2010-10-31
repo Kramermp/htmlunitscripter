@@ -107,7 +107,7 @@ var htmlunitScripter = function () {
 			htmlunitScripter.flush();			
 
 			var theWidth=window.screen.width-60;
-			var theHeight=window.screen.height-200;
+			var theHeight=window.screen.height-140;
 			var top = 25;
 			var left = 25;
 			var openProperties="width=" + theWidth + ",height=" + theHeight + ",top=" + top + ",left=" + left;
@@ -116,6 +116,17 @@ var htmlunitScripter = function () {
 								"", 
 								openProperties,
 								{beginUrl: theBeginUrl, endUrl: theEndUrl});
+		},
+
+		openOptionsWindow : function ()
+		{
+			var top = 25;
+			var left = 25;
+			var openProperties="top=" + top + ",left=" + left;			
+	
+			var newWindow = window.openDialog("chrome://htmlunitscripter/content/options.xul", 
+								"HtmlUnitScripter options", 
+								openProperties);
 		},
 
 		onPageLoad : function (event)
