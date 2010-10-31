@@ -36,6 +36,8 @@
 				    onclick="htmlunitScripter.clear()"/>
 				<button id="generateJavaClass" label="&generateJavaClassLabel;" tooltiptext="&generateJavaClassTooltip;"
 				    onclick="htmlunitScripter.openJavaClassWindow()"/>
+				<button id="openOptions" label="&openOptionsLabel;" tooltiptext="&openOptionsTooltip;"
+					onclick="htmlunitScripter.openOptionsWindow()"/>
 
 				<spacer flex="1"/>
 				<hbox>
