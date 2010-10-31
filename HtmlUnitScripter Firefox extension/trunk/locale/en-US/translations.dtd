@@ -12,3 +12,5 @@
 <!ENTITY generateJavaClassTooltip "Generate full Java class">
 <!ENTITY generateJavaClassLabel2 "Generate Java">
 <!ENTITY generateJavaClassTooltip2 "Generate Java class using specified package and class names">
+<!ENTITY openOptionsLabel "Preferences">
+<!ENTITY openOptionsTooltip "Open HtmlUnitScripter preferences">
