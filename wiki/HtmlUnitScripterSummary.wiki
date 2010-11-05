@@ -66,6 +66,8 @@ Click on the HtmlUnitScripter.xpi <a href="http://code.google.com/p/htmlunitscri
 
 - The Generate Java button will allow you to generate a full Java class from the script code that has been recorded. More info is available below.
 
+- The Preferences button will open a window allowing you to adjust various options for HtmlUnitScripter. See the Extension Options section below for more details about the various options.
+
 - The "Next variable num" number box is used to assign numbers to generated variable names while scripting. In Java, you cannot create two new variables with the same name. HtmlUnitScripter gets around this limitation by appending a number to each new variable that is generated. The number in the box is automatically incremented every time a new variable is created. You have the option of manually setting the next variable number. This feature comes in handy when you need to rerecord a portion of a script. If you started over using variable number 1, it would interfere with the existing variable 1 in the script that you generated previously.
 
 - The "Variable Append" text box can append some text to each variable name. This feature also comes in handy when you need to rerecord a portion of a script. For example, assume you recorded a script that had something like this:
@@ -88,7 +90,7 @@ You can then comment out the existing checkbox5 code and replace it with the new
 
 = Extension options =
 
-HtmlUnitScripter has some user-adjustable options. To see the options within Firefox, navigate to Tools -> Add-ons and click the Options button for HtmlUnitScripter.
+HtmlUnitScripter has some user-adjustable options. To see the options within Firefox, click the Preferences button or navigate to Tools -> Add-ons and click the Options button for HtmlUnitScripter.
 
 *Firefox Error Console Logging:* This option controls how much information is written to the Firefox error log (available by navigating to Tools -> Error Console within Firefox). Entries from HtmlUnitScripter are placed in the Messages section of the log. The following options are available via a dropdown:
   - None: No messages will be written to the log from HtmlUnitScripter.
