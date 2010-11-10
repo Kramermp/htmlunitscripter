@@ -909,9 +909,6 @@ function htmlElementByName(target)
 
 function htmlElementByXPath(target)
 {
-	var listNum = getNextNum();
-	var elementNum = getNextNum();
-
 	var xPath;
 
 	// Buttons are a special case- the type is reported as "submit", even though this is not specified in the 
@@ -925,13 +922,21 @@ function htmlElementByXPath(target)
 		xPath = makeXPath(target,true);
 	}
 	
+	// Only process the XPath if a usable query is available
+	if(xPath != "")
+	{
+		var listNum = getNextNum();
+		var elementNum = getNextNum();
 
-	var theCode = addSavePagesStatement();
-	theCode += tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\n";
-	theCode += tabs + "     \"" + xPath + "\");\n";
+		var theCode = addSavePagesStatement();
+		theCode += tabs + "List<HtmlElement> elements" + listNum + " = (List<HtmlElement>) page.getByXPath(\n";
+		theCode += tabs + "     \"" + xPath + "\");\n";
     	theCode += tabs + "HtmlElement element" + elementNum + " = elements" + listNum + ".get(0);\n";
     	theCode += tabs + "page = element" + elementNum + ".click();\n";
-	anchorBuffer = theCode + "\n";
+		anchorBuffer = theCode + "\n";
+	}
+
+
 }
 
 /*
