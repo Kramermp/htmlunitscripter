@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css"  type="text/css"?>
+<?xml-stylesheet href="chrome://htmlunitscripter/skin/skin.css" type="text/css"?> 
+<!DOCTYPE htmlunitscripter SYSTEM "chrome://htmlunitscripter/locale/translations.dtd">
+<!-- Extremely recommended to keep this css include!! -->
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
+        title="Generated Java file">
+<script src="generateJava.js" />
+
+<vbox>
+	<hbox>
+		<hbox>  		
+			<hbox width="100">			
+				<label value="Package:"/>
+			</hbox>
+			
+			<textbox id="packageBox" width="500"/>
+		</hbox>
+
+		<button label="&generateJavaClassLabel2;" tooltiptext="&generateJavaClassTooltip2;" onclick="generateJava.generateJavaCode()"/>
+
+	</hbox>
+
+	<hbox>
+		<hbox width="100">
+			<label value="Class name:"/>
+		</hbox>		
+		
+		<textbox id="classNameBox" width="500"/>
+	</hbox>
+
+	<hbox>
+		<label id="messagesLabel" value="Messages:"/>
+	</hbox>	
+		
+	<textbox id="generatedJavaTextbox" multiline="true" rows="30" />
+</vbox>
+
+</window>
+
