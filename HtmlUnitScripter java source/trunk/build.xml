@@ -23,6 +23,21 @@
 	    	<!-- Jar up the built classes-->
 		<jar jarfile="dist/htmlunit-scripter-2.7.jar" basedir="dist/classes" />
     	</target>
+	
+		<target name="test">
+			<junit haltonfailure="no" printsummary="yes" showoutput="yes" failureproperty="junitFailed">
+				<formatter type="plain" usefile="false" />
+				<classpath>
+					<pathelement location="lib/junit-4.8.2.jar"/>
+					<pathelement location="bin"/>
+				</classpath>	
+				<batchtest>
+					<fileset dir="bin">
+						<include name="**/*Test.class"/>
+					</fileset>
+				</batchtest>
+			</junit>
+		</target>
 
 	<!-- 3rd party jars -->
 	<property name="htmlunit-lib"
