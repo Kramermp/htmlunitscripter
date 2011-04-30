@@ -428,7 +428,6 @@ function linkUseText(target)
 {
 	var targetAsString = target.toString();
 	var textbox = document.getElementById("htmlunitScripterTextbox");
-
 	var nextNum = getNextNum();					
 	var nextNextNum = getNextNum();					
 		
