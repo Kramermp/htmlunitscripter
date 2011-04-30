@@ -86,7 +86,7 @@ var generateJava = function () {
 				theCode += "          boolean savePagesLocally = false;\n";
 				theCode += "          String url = \"" + url + "\";\n";
 				theCode += nl;
-				theCode += "          WebClient webClient = new WebClient( BrowserVersion.FIREFOX_3 );\n";
+				theCode += "          WebClient webClient = new WebClient(BrowserVersion.FIREFOX_3_6);\n";
 				theCode += "          webClient.setThrowExceptionOnScriptError(false);\n";
 				theCode += nl;
 				theCode += "          String savePagesLocallyString = System.getProperty(\"savePagesLocally\");\n";
@@ -102,7 +102,7 @@ var generateJava = function () {
 				theCode += nl;
 		     	theCode += "               if(localFilePath == null)\n";
 		     	theCode += "               {\n";
-		        theCode += "                    System.out.println( \"localFilePath property needs to be specified on command line, like so:\" +\n";
+		        theCode += "                    System.out.println(\"localFilePath property needs to be specified on command line, like so:\" +\n";
 		        theCode += "                         \"-DlocalFilePath=somefilepath\");\n";
 		        theCode += "                    throw new RuntimeException(\"localFilePath property was not specified\");\n";
 		        theCode += "               }\n";
@@ -124,7 +124,7 @@ var generateJava = function () {
                 theCode += "                    String formattedDate = sd.format(new Date());\n";
                 theCode += "                    localFilePath += formattedDate + separator;\n";
                 theCode += "                    File newLocalFolder = new File(localFilePath);\n";
-                theCode += "                    boolean success = newLocalFolder.mkdir();\n";
+                theCode += "                    boolean success = newLocalFolder.mkdirs();\n";
                 theCode += nl;    
                 theCode += "                    if(!success)\n";
                 theCode += "                    { throw new RuntimeException(\"Could not create new folder at location \" + localFilePath); }\n";
