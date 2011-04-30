@@ -1,6 +1,7 @@
 content     htmlunitscripter    chrome/content/
 content     htmlunitscripter    chrome/content/ contentaccessible=yes
-overlay chrome://browser/content/browser.xul chrome://htmlunitscripter/content/browser.xul
+overlay chrome://browser/content/browser.xul chrome://htmlunitscripter/content/browser3.xul appversion<=3.6.*
+overlay chrome://browser/content/browser.xul chrome://htmlunitscripter/content/browser.xul appversion>3.6.*
 
 locale	htmlunitscripter	en-US	locale/en-US/
 
