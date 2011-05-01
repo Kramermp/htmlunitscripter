@@ -1,0 +1,8 @@
+content     htmlunitscripter    chrome/content/
+content     htmlunitscripter    chrome/content/ contentaccessible=yes
+overlay chrome://browser/content/browser.xul chrome://htmlunitscripter/content/browser.xul
+
+locale	htmlunitscripter	en-US	locale/en-US/
+
+skin	htmlunitscripter	classic/1.0	skin/
+style	chrome://global/content/customizeToolbar.xul	chrome://htmlunitscripter/skin/skin.css
