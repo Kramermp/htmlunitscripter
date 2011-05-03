@@ -56,7 +56,7 @@ HtmlUnitScripter is currently set up to run under any version of Firefox 3. It h
 *Firefox extension:*
 Click on the HtmlUnitScripter.xpi <a href="http://code.google.com/p/htmlunitscripter/downloads/list">download link</a> and use Firefox to open the file. Firefox will ask to confirm the installation. Click on "Install Now". After the extension has been installed, you must restart Firefox. After Firefox has been restarted, you should see a small scripter icon in the lower right corner. Click on the icon to open HtmlUnitScripter.
 
-*Firefox 4 users*- For Firefox 4, Mozilla has replaced the toolbar where the HtmlUnitScripter icon is installed by default with an "add-on" bar. For whatever reason, the add-on bar is hidden by default. In order to see the scripter icon, the add-on bar must be made visible. This can be done by navigating to Options (Windows) or View -> Toolbars (Linux) and checking the checkbox next to the "Add-on Bar" entry.
+*Firefox 4 users*- For Firefox 4, Mozilla has replaced the toolbar where the HtmlUnitScripter icon is installed by default with an "add-on" bar. For whatever reason, the add-on bar is hidden by default. In order to see the scripter icon, the add-on bar must be made visible. This can be done by navigating to Options (when menus are hidden) or View -> Toolbars (when menus are visible) and checking the checkbox next to the "Add-on Bar" entry.
 
 - The output box is on the bottom and holds a preview of the generated Java code.
 
