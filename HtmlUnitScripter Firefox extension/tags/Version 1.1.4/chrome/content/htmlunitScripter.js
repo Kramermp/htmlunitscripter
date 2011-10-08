@@ -663,16 +663,7 @@ function radioButtonById(target)
 	var listNum = getNextNum();
 	var radioButtonNum = getNextNum();					
 		
-	var theCode = tabs + "List<HtmlElement> radioButtons" + listNum + " = page.getElementsByIdAndOrName(\"" + target.id +  "\");\n";
-        theCode += tabs + "HtmlInput radioButton" + radioButtonNum + " = null;\n";
-        theCode += tabs + "for(HtmlElement element: radioButtons" + listNum + ")\n";
-        theCode += tabs + "{\n";
-        theCode += tabs + "     HtmlInput inputElement = (HtmlInput) element;\n";
-        theCode += tabs + "     if( \"" + target.value + "\".equals( inputElement.getValueAttribute() ) )\n";
-        theCode += tabs + "     {\n";
-        theCode += tabs + "          radioButton" + radioButtonNum + " = inputElement;\n";
-        theCode += tabs + "     }\n";
-        theCode += tabs + "}\n";
+	var theCode = tabs + "HtmlRadioButtonInput radioButton" + radioButtonNum + " = (HtmlRadioButtonInput) page.getElementById(\"" + target.id +  "\");\n";
 	theCode += tabs + "radioButton" + radioButtonNum + ".click();\n";
 	codeBuffer = codeBuffer + theCode + "\n";
 }
