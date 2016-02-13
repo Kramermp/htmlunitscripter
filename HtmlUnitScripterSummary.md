@@ -1,0 +1,164 @@
+# Introduction #
+
+HtmlUnitScripter is a Firefox extension that generates Java code based on items that you interact with while using the browser. The generated Java code can then be copied into a Java class that uses the HtmlUnit jars (available from <a href='http://htmlunit.sourceforge.net'><a href='http://htmlunit.sourceforge.net'>http://htmlunit.sourceforge.net</a></a>) to interact with web pages. HtmlUnitScripter can track the actions of clicking a mouse and filling in text on a web page.
+
+For example, say you are on the HtmlUnit home page <a href='http://htmlunit.sourceforge.net'><a href='http://htmlunit.sourceforge.net'>http://htmlunit.sourceforge.net</a></a>. Within Firefox, you turn on HtmlUnitScripter. A dialog box appears with buttons to pause, record, etc. (more details below). You click the Record button. Then you click on the Get Started link on the page. In the dialog box, the following code is generated:
+```
+
+List<HtmlAnchor> anchors1 =  page.getAnchors();
+HtmlAnchor link2 = null;
+
+for(HtmlAnchor anchor: anchors1)
+{
+if(anchor.asText().indexOf("Get started") > -1 )
+{
+link2 = anchor;
+break;
+}
+}
+
+page = link2.click();
+```
+
+You can then copy and paste this code into an existing HtmlUnit Java class. Or you can generate a Java class within HtmlUnitScripter. The advantage to this approach is that you do not have to dig through the page's source code to find the anchor and then code it by hand in your HtmlUnit Java class. By using the Firefox extension and clicking around through your website, you can build up HtmlUnit tests very quickly.
+
+# Features #
+
+HtmlUnitScripter can create Java code for the following types of HTML elements:
+
+- Links (known as HtmlAnchors in HtmlUnit)
+
+- Clickable input elements(such as checkboxes, radio buttons, submit buttons and select lists/options) are supported. For some input elements, HtmlUnitScripter will construct code that will create a generic HtmlInput object that is "clickable").
+
+- Textboxes, textareas and password fields. For these elements, HtmlUnitScripter will capture the text that you typed as the field loses focus. The generated Java code will insert the text into the HtmlUnit object.
+
+After you have completed scripting in Firefox, you can generate the contents of a Java class with one click.
+
+Code generated from HtmlUnitScripter has the ability to save html pages to the local file system during a test. This feature allows you to "see" how HtmlUnit was interacting with each page while the test was executing. The source code line number that was executed when the page was accessed is also shown at the top of the saved page. This feature makes debugging a test far easier. See the "Running generated Java code" section for more details.
+
+# Limitations #
+
+- HtmlUnitScripter is under ongoing development, and not every possible browser action is supported. For some actions, you may still need to manually code in Java to get the required results thru HtmlUnit.
+
+- HtmlUnitScripter cannot compensate for bad web page code. For example, if your web page has a textbox with neither an id nor a name attribute, HtmlUnitScripter may not be able to uniquely identify the textbox on the page. For these situations, HtmlUnitScripter will output an XPath that may or may not be able to retrieve the element.
+
+- Behind the scenes, HtmlUnitScripter runs Javascript as part of the Firefox plugin. If you click on multiple elements very quickly, the Javascript will not be able to keep up and some output code will not be generated.
+
+- HtmlUnit is very picky about missing Javascript files. You may record a script thru the browser without any visible errors, but executing the script later can result in Javascript errors from HtmlUnit. The only thing you can do for these situations is to correct the situation that caused the missing Javascript.
+
+# Requirements #
+
+HtmlUnitScripter is currently set up to run under any version of Firefox 3. It has been tested with HtmlUnit version 2.7, although it will likely run well with later 2.x versions. Running the generated Java classes requires Java 5 and later.
+
+# Installing and running HtmlUnitScripter #
+
+**Firefox extension:**
+Click on the HtmlUnitScripter.xpi <a href='http://code.google.com/p/htmlunitscripter/downloads/list'>download link</a> and use Firefox to open the file. Firefox will ask to confirm the installation. Click on "Install Now". After the extension has been installed, you must restart Firefox. After Firefox has been restarted, you should see a small scripter icon in the lower right corner. Click on the icon to open HtmlUnitScripter.
+
+**Firefox 4 users**- For Firefox 4, Mozilla has replaced the toolbar where the HtmlUnitScripter icon is installed by default with an "add-on" bar. For whatever reason, the add-on bar is hidden by default. In order to see the scripter icon, the add-on bar must be made visible. This can be done by navigating to Options (when menus are hidden) or View -> Toolbars (when menus are visible) and checking the checkbox next to the "Add-on Bar" entry.
+
+- The output box is on the bottom and holds a preview of the generated Java code.
+
+- The Pause button will pause code generation. HtmlUnitScripter is paused by default when it is started. To begin scripting, you must click the Record button (to the right of the Pause button).
+
+- The Flush button will flush generated code in memory to the output box. Normally, clicking on elements and adding text does not show up in the output box until a new page is loaded. This is to ensure that the "click on html link" code is always generated last. If you want to see the generated output before a page is loaded, click the Flush button.
+
+- The Clear button will clear the output box and reset the variable counter.
+
+- The Generate Java button will allow you to generate a full Java class from the script code that has been recorded. More info is available below.
+
+- The Preferences button will open a window allowing you to adjust various options for HtmlUnitScripter. See the Extension Options section below for more details about the various options.
+
+- The "Next variable num" number box is used to assign numbers to generated variable names while scripting. In Java, you cannot create two new variables with the same name. HtmlUnitScripter gets around this limitation by appending a number to each new variable that is generated. The number in the box is automatically incremented every time a new variable is created. You have the option of manually setting the next variable number. This feature comes in handy when you need to rerecord a portion of a script. If you started over using variable number 1, it would interfere with the existing variable 1 in the script that you generated previously.
+
+- The "Variable Append" text box can append some text to each variable name. This feature also comes in handy when you need to rerecord a portion of a script. For example, assume you recorded a script that had something like this:
+
+```
+
+HtmlInput checkbox5 = (HtmlInput) page.getElementById("id1");
+checkbox5.click();
+```
+
+But when you went to run the Java class, you got an exception because another element of a different type also has an id that equals "id1". This is a problem with the page, and should technically be fixed. But HtmlUnitScripter allows you to get around this limitation by changing the extension options to read that checkbox in a different way (more details about extension options are available below). Say you change the extension options to read input elements by XPath. But now you need to rerecord a portion of the script that clicks on that checkbox. You can set the "Next variable num" box to "5" and set the "Variable Append" box to "a". When you click on the checkbox again, you will get this output:
+
+```
+
+List<HtmlElement> elements5a = (List<HtmlElement>) page.getByXPath("(//input[@type = 'checkbox'])[3]");
+
+HtmlInput checkbox6a = (HtmlInput) elements5a.get(0);
+checkbox6a.click();
+```
+
+You can then comment out the existing checkbox5 code and replace it with the new code. The new code will not interfere with existing variables in the Java class. Thus, updating a script can become a quick operation.
+
+# Extension options #
+
+HtmlUnitScripter has some user-adjustable options. To see the options within Firefox, click the Preferences button or navigate to Tools -> Add-ons and click the Options button for HtmlUnitScripter.
+
+**Firefox Error Console Logging:** This option controls how much information is written to the Firefox error log (available by navigating to Tools -> Error Console within Firefox). Entries from HtmlUnitScripter are placed in the Messages section of the log. The following options are available via a dropdown:
+> - None: No messages will be written to the log from HtmlUnitScripter.
+> - Errors only: Error messages will be written to the log. HtmlUnitScripter logs error messages when an element cannot be uniquely identified on the page.
+> - Verbose: Every element that is picked up by HtmlUnitScripter is logged. This mode is mainly used for debugging HtmlUnitScripter. Note that many elements, like the html form element, are picked up by HtmlUnitScripter but are not valid clickable items. HtmlUnitScripter will not output code for these items.
+
+**Generate page logging statements between page loads:** This option is enabled by default. Whenever a new page is loaded while HtmlUnitScripter is recording, the page URL and title are generated as Java comments and as System.out.println() statements. This helps to "see" progress when running the Java program with the generated code. This option also prints out Java code that can save the html page to the local filesystem as the script is being executed. More information about this feature is provided below.
+
+**Retrieval of page info: check main frame only for info:** This option is enabled by default. As described above, whenever a new page is loaded while HtmlUnitScripter is recording, the page URL and title is generated as Java comments. Many websites use multiple frames to hold items like ads. For these websites, HtmlUnitScripter would generate URL and title information for every frame that it finds on the page. When this item is enabled, HtmlUnitScripter will filter out all frame information except for the main frame. However, on some websites, you may need to see information for all frames. Disable this option to turn off the filtering.
+
+**Retrieving links** HtmlUnitScripter provides several ways to retrieve links. The attributes available in a link can vary. For example, a link may or may not have an id attribute. In many cases, the link can still uniquely be identified on a page by using using some other attribute, such as the link href attribute. Code exists to retrieve a link in the following ways:
+
+> - Retrieve a link using its id or name attribute (id is always used first if available)
+
+> - Retrieve a link using its href attribute (the link's destination)
+
+> - Retrieve a link using the text that is displayed on the page (the text between `<a>` and `</a>` anchors)
+
+> - Retrieve a link which is a clickable image, like so: `<a href="there.html"><img src="button.png"></a>`
+
+> - Retrieve a link by XPath. XPath is a type of XML query that can retrieve an element by its location within the page html. XPath example: (//a)[3](3.md) In general, using the XPath is not recommended, since it is an absolute path. If the original html page is modified, then the XPath recorded in the script may become inaccurate and can break the script.
+
+
+For maximum flexibility, HtmlUnitScripter will use combinations of these methods for each extension option. For example, if the "Use id first" attribute is selected, then HtmlUnitScripter will try to extract the id from a link object. But if the id has not been set on the link, it will try to extract the name attribute, and so on. The following hierarchy is used:
+
+> - **Use id first** (try using id attribute, then try using name attribute, then try using displayed text, then try using clickable image info, then try using the href attribute)
+
+> - **Use name first** (try using name attribute, then try using id attribute, then try using displayed text, then try using clickable image info, then try using the href attribute)
+
+> - **Use link text first** (try using displayed text, then try using id attribute, then try using name attribute, then try using a clickable image, then try using the href attribute)
+
+> - **Use link href first** (try using href attribute, then try using id attribute, then try using name attribute, then try using a clickable image, then try using displayed text)
+
+> - **Use link XPath only** retrieves a link only by its XPath. The XPath will always exist, so no other attributes are tried.
+
+
+**Retrieving other elements**
+
+Like links, several ways are provided to retrieve html input elements, textboxes and textareas. The following options are available for these elements:
+> - **Use id first** (try using id attribute, then try using name attribute, then use XPath)
+
+> - **Use name first** (try using name attribute, then try using id attribute, then use XPath)
+
+> - **Use XPath only** retrieves an element only by its XPath. The XPath will always exist, so no other attributes are tried.
+
+# Generating a full Java class #
+HtmlUnitScripter is capable of generating the text for a full Java class, including all import statements and try/catch blocks. Due to the security constraints in Javascript, a .java file cannot actually be saved on the local machine. But the class generation feature provides a way to generate the text for a Java class that you can copy and paste into a .java file that you create yourself.
+
+To generate a Java class, click the "Generate Class" button. A dialog box will pop up.
+Before a class can be generated, you must provide the package path and class name. The package path can be something like "org.mysite.scripts". The class name can be something like "MySiteTest". After you have typed in the package path and class name, click the "Generate Java" button. You will need to create a .java file in the appropriate place on your file system. Then you can copy the generated code in the window to the .java file, and compile and run the class.
+
+
+# Running generated Java code #
+
+Running the generated Java class is the same as running any Java class that uses HtmlUnit.
+Code generated using HtmlUnitScripter has the ability to capture web pages as HtmlUnit sees them. This is done using the built-in HtmlUnit API to save pages to the local file system. By specifying certain extension and JRE runtime options (shown below), running a script will save each web page that is accessed during a test. Pages are saved with the name "output\_X.html", where X is the chronological number of when the page was saved. If an exception occurs that forced the script to abort early, another page is saved named "error\_page.html". This page holds the last page that was accessed by the script before the exception occurred. Elements like images, css files, etc., are saved for each page in a separate "output\_X" folder ("error\_page" folder for the error page). When the saved web pages are viewed locally, the page appears similar to how it looks on the actual website. In addition, some information and several links are added to the top of the page:
+
+```
+
+Java code: org.home.AutoTest.main(AutoTest.java:90) Previous Next Error Page
+```
+
+The "Java code" line at the top indicates the line of source code that was being executed when the page was saved. This makes it easy to find the source code that generated a certain page. The Previous and Next links navigate to the previous and next pages that were saved during the test. The Error Page link will navigate to the error\_page.html page that was saved during the test (if an exception occurred). If no exception occurred, this link points to a non-existent error page.
+
+To capture web pages during a test, the "Generate page logging statements between page loads" extension option must be enabled. Enabling this option will allow Java code to be generated that will save the pages. Two JVM runtime arguments must be also be added when executing the Java class: ```
+-DsavePagesLocally=true -DlocalFilePath=yourFilePath```
+
+When a test is executed, the Java class will take the provided localFilePath and create a folder inside with the current date and time as the folder name. Saved web pages and their associated folders will then be located under this folder. Each time you run the test, a new folder with the current date and time will be created. To stop folders from being created during a test, simply set -DsavePagesLocally=false.
